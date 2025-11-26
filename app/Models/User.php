@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'phone',
+        'address',
     ];
 
     /**
@@ -44,5 +47,25 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function fooditems() 
+    {
+        return $this->hasMany(FoodItem::class);
+    }
+
+    public function claims() 
+    {
+        return $this->hasMany(Claim::class, 'receiver_id');
+    }
+
+    public function isDonor(): bool
+    {
+        return $this->role === 'donor';
+    }
+
+    public function isReceiver(): bool
+    {
+        return $this->role === 'receiver';
     }
 }
