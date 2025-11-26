@@ -9,6 +9,18 @@ class FoodItem extends Model
 {
     use HasFactory;
     
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'name',
+        'description',
+        'photo',
+        'quantity',
+        'pickup_location',
+        'expires_at',
+        'status',
+    ];
+    
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -8,14 +8,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Claim extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'food_id',
+        'receiver_id',
+        'status',
+        'message',
+    ];
+
     
-    public function users()
+    public function receiver()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'receiver_id');
     }
 
     public function fooditems()
     {
-        return $this->belongsTo(FoodItem::class);
+        return $this->belongsTo(FoodItem::class, 'food_id');
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('food_id')->constrained('food_items')->cascadeOnDelete();
             $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['pending', 'approved', 'rejected', 'completed'])->default('pending');
-            $table->text('message');
+            $table->text('message')->nullable();
             $table->timestamps();
         });
     }
