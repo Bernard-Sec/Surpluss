@@ -6,6 +6,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DonorController;
 use App\Http\Controllers\ReceiverController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
+
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        Session::put('locale', $locale);
+    }
+    return Redirect::back();
+})->name('lang.switch');
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -36,7 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    Route::prefix('donor')->group(function () {
+    Route::prefix('donor')->middleware('role:donor')->group(function () {
         Route::get('/dashboard', [DonorController::class, 'index'])->name('donor.dashboard');
         
         Route::get('/food/create', [DonorController::class, 'create'])->name('donor.food.create');
@@ -55,7 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/profile', [DonorController::class, 'updateProfile'])->name('donor.profile.update');
     });
 
-    Route::prefix('receiver')->group(function () {
+    Route::prefix('receiver')->middleware('role:receiver')->group(function () {
         Route::get('/dashboard', [ReceiverController::class, 'index'])->name('receiver.dashboard');
         Route::get('/food/{foodItem}', [ReceiverController::class, 'show'])->name('receiver.food.show');
         Route::get('/profile', [ReceiverController::class, 'profile'])->name('receiver.profile');

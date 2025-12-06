@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
     <div class="container">
-
+            
         {{-- Logo --}}
         <a class="navbar-brand fw-bold text-success" href="{{ route('home') }}">
             Surplus
@@ -62,6 +62,10 @@
                     </li>
 
                 @endauth
+
+                    <li class="nav-item ms-4 mt-1">
+                        <x-language-switch />
+                    </li>
             </ul>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <x-auth-card title="Login">
+    <x-auth-card :title="__('login.title')">
 
         {{-- ERROR MESSAGE --}}
         @if ($errors->any())
@@ -18,26 +18,28 @@
                 <div class="alert alert-success">{{ session('status') }}</div>
             @endif
 
-            <label class="fw-semibold">Email</label>
+            <label class="fw-semibold">{{ __('login.email_label') }}</label>
             <input type="email" name="email" class="form-control mb-3"
-                   placeholder="you@example.com" required>
+                   placeholder="{{ __('login.placeholder_email') }}" required>
 
-            <label class="fw-semibold">Password</label>
+            <label class="fw-semibold">{{ __('login.password_label') }}</label>
             <input type="password" name="password" class="form-control mb-3"
                    placeholder="••••••••" required>
 
-            <button class="btn btn-success w-100 mt-2">Login</button>
+            <button class="btn btn-success w-100 mt-2">
+                {{ __('login.button') }}
+            </button>
 
             <div class="text-center mt-3">
                 <a href="{{ route('password.request') }}" class="text-muted">
-                    Forgot your password?
+                    {{ __('login.forgot_password') }}
                 </a>
             </div>
 
             <div class="text-center mt-3">
-                <span class="text-muted">No Account?</span>
+                <span class="text-muted">{{ __('login.no_account') }}</span>
                 <a href="{{ route('register') }}" class="text-success fw-semibold">
-                    Register Here
+                    {{ __('login.register_link') }}
                 </a>
             </div>
 
