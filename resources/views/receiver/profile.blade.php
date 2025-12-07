@@ -89,7 +89,7 @@
                                     <tr>
                                         <td class="ps-4">
                                             <div class="fw-medium">{{ $claim->fooditems->name ?? 'Item dihapus' }}</div>
-                                            <small class="text-muted">Dari: {{ $claim->fooditems->user->name ?? 'Unknown' }}</small>
+                                            <small class="text-muted">Dari: {{ $claim->fooditems->users->name ?? 'Unknown' }}</small>
                                         </td>
                                         <td>{{ $claim->created_at->format('d M Y') }}</td>
                                         <td>
@@ -97,8 +97,39 @@
                                                 <span class="badge bg-warning text-dark">Pending</span>
                                             @elseif($claim->status == 'approved')
                                                 <span class="badge bg-success">Disetujui</span>
+                                                <div class="mt-1 small text-muted">
+                                                    Silakan ambil di tempat dan waktu yang sudah disepakati.
+                                                </div>
                                             @elseif($claim->status == 'rejected')
                                                 <span class="badge bg-danger">Ditolak</span>
+                                                @if($claim->message)
+                                                    <div class="mt-1">
+                                                        <button type="button" class="btn btn-link btn-sm text-danger p-0" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#reasonModal-{{ $claim->id }}" 
+                                                                style="text-decoration: none; font-size: 0.85rem;">
+                                                            <i class="bi bi-info-circle"></i> Lihat Alasan
+                                                        </button>
+                                                    </div>
+
+                                                    {{-- MODAL ALASAN PENOLAKAN --}}
+                                                    <div class="modal fade" id="reasonModal-{{ $claim->id }}" tabindex="-1" aria-hidden="true">
+                                                        <div class="modal-dialog modal-sm modal-dialog-centered">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header bg-danger text-white">
+                                                                    <h6 class="modal-title">Alasan Penolakan</h6>
+                                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p class="mb-0 text-dark">{{ $claim->message }}</p>
+                                                                </div>
+                                                                <div class="modal-footer p-1">
+                                                                    <button type="button" class="btn btn-sm btn-secondary w-100" data-bs-dismiss="modal">Tutup</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             @else
                                                 <span class="badge bg-secondary">Selesai</span>
                                             @endif

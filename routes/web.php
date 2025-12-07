@@ -60,7 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/requests/{claim}/approve', [DonorController::class, 'approve'])->name('donor.requests.approve');
         Route::patch('/requests/{claim}/reject', [DonorController::class, 'reject'])->name('donor.requests.reject');
         
-        Route::get('/donor/profile', [DonorController::class, 'profile'])->name('donor.profile');
+        Route::get('/profile', [DonorController::class, 'profile'])->name('donor.profile');
         Route::get('/profile/edit', [DonorController::class, 'editProfile'])->name('donor.profile.edit');
         Route::put('/profile', [DonorController::class, 'updateProfile'])->name('donor.profile.update');
     });
