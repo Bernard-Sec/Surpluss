@@ -25,7 +25,7 @@
                         <div>
                             <span class="badge bg-success mb-2">{{ $foodItem->category->name ?? 'Umum' }}</span>
                             <h2 class="card-title fw-bold mb-1">{{ $foodItem->name }}</h2>
-                            <p class="text-muted mb-0">Donatur: <span class="fw-medium text-dark">{{ $foodItem->user->name }}</span></p>
+                            <p class="text-muted mb-0">Donatur: <span class="fw-medium text-dark">{{ $foodItem->users->name }}</span></p>
                         </div>
                         <div class="text-end">
                              <small class="text-muted d-block">Kadaluarsa:</small>

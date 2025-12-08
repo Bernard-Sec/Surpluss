@@ -15,6 +15,14 @@ class DonorController extends Controller
 {
     public function index()
     {
+        // --- TAMBAHAN LOGIC LAZY UPDATE ---
+        // Sebelum menampilkan dashboard, update dulu semua item milik user ini yang sudah basi
+        \App\Models\FoodItem::where('user_id', Auth::id()) // Opsional: atau hapus where user_id untuk update global
+            ->where('status', 'available')
+            ->where('expires_at', '<', now())
+            ->update(['status' => 'expired']);
+        // ----------------------------------
+        
         $user = Auth::user();
         $userId = $user->id;
 
@@ -189,15 +197,33 @@ class DonorController extends Controller
         // Opsional: Update status makanan jadi 'claimed' agar tidak bisa diklaim orang lain
         $claim->fooditems->update(['status' => 'claimed']);
 
+        // 3. LOGIKA BARU: Tolak semua request lain untuk makanan INI
+        // Cari klaim lain yang food_id nya sama, tapi ID klaimnya beda, dan statusnya masih pending
+        Claim::where('food_id', $claim->food_id)
+        ->where('id', '!=', $claim->id) // Jangan reject yang baru saja di-approve
+        ->where('status', 'pending')
+        ->update([
+            'status' => 'rejected',
+            'message' => 'Maaf, makanan ini telah diberikan kepada penerima lain.' // Pesan otomatis
+        ]);
+
         return back()->with('success', 'Permintaan berhasil disetujui. Silakan hubungi penerima.');
     }
 
-    public function reject(Claim $claim)
+    public function reject(Request $request, Claim $claim)
     {
         // Ensure the food item belongs to the logged-in user
         if ($claim->fooditems->user_id !== Auth::id()) abort(403); 
 
-        $claim->update(['status' => 'rejected']);
+        // Validasi input alasan
+        $request->validate([
+            'rejection_reason' => 'required|string|max:255',
+        ]);
+
+        $claim->update([
+            'status' => 'rejected',
+            'message' => $request->rejection_reason, // Simpan alasan ke kolom message
+        ]);
 
         return back()->with('success', 'Permintaan ditolak.');
     }

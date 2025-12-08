@@ -14,8 +14,16 @@ class ReceiverController extends Controller
 { 
     public function index(Request $request)
     {
+        // --- TAMBAHAN LOGIC LAZY UPDATE ---
+        // Update data global agar receiver tidak melihat item basi
+        \App\Models\FoodItem::where('status', 'available')
+            ->where('expires_at', '<', now())
+            ->update(['status' => 'expired']);
+        // ----------------------------------
+        
         $query = FoodItem::with(['users', 'category']) 
-                 ->where('status', 'available'); 
+                 ->where('status', 'available')
+                 ->where('expires_at', '>', now()); 
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -88,17 +96,17 @@ class ReceiverController extends Controller
     public function profile()
     {
         // $userId = Auth::id();
-        $userId = Auth::id() ?? 2;
+        $userId = Auth::id();
         $user = User::find($userId);
 
         $totalClaims = Claim::where('receiver_id', $userId)->count();
         $pendingClaims = Claim::where('receiver_id', $userId)->where('status', 'pending')->count();
         $approvedClaims = Claim::where('receiver_id', $userId)->where('status', 'approved')->count();
 
-        $claimsHistory = Claim::with('fooditems') 
-                            ->where('receiver_id', $userId)
-                            ->latest()
-                            ->get();
+        $claimsHistory = Claim::with(['fooditems.users']) 
+                        ->where('receiver_id', $userId)
+                        ->latest()
+                        ->get();
 
         return view('receiver.profile', compact('user', 'totalClaims', 'pendingClaims', 'approvedClaims', 'claimsHistory'));
     }
@@ -127,6 +135,16 @@ class ReceiverController extends Controller
 
     public function storeClaim(Request $request, FoodItem $foodItem)
     {
+        // 1. Cek status
+        if ($foodItem->status !== 'available') {
+            return back()->with('error', 'Item tidak tersedia.');
+        }
+
+        // 2. TAMBAHAN: Cek tanggal expired
+        if ($foodItem->expires_at < now()) {
+            return back()->with('error', 'Maaf, makanan ini sudah kedaluwarsa.');
+        }
+        
         if ($foodItem->user_id === \Illuminate\Support\Facades\Auth::id()) {
             return back()->with('error', 'Anda tidak bisa mengklaim makanan Anda sendiri.');
         }

@@ -63,7 +63,7 @@
                             
                             @if($foodItem->photo)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/' . $foodItem->photo) }}" alt="Foto Lama" class="img-thumbnail" style="max-height: 150px;">
+                                    <img src="{{ asset($foodItem->photo) }}" alt="Foto Lama" class="img-thumbnail" style="max-height: 150px;">
                                 </div>
                             @endif
 

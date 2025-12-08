@@ -82,7 +82,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($item->photo)
-                                                <img src="{{ asset('storage/' . $item->photo) }}" class="rounded me-3" width="50" height="50" style="object-fit: cover;">
+                                                <img src="{{ asset($item->photo) }}" class="rounded me-3" width="50" height="50" style="object-fit: cover;">
                                             @else
                                                 <div class="rounded bg-secondary me-3 d-flex align-items-center justify-content-center text-white" style="width: 50px; height: 50px;">?</div>
                                             @endif
@@ -93,14 +93,41 @@
                                         </div>
                                     </td>
                                     <td>{{ $item->quantity }} Porsi</td>
-                                    <td>{{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}</td>
                                     <td>
-                                        <a href="{{ route('donor.food.edit', $item->id) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                                        <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus item ini?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
-                                        </form>
+                                        @php
+                                            $isExpired = \Carbon\Carbon::parse($item->expires_at)->isPast();
+                                        @endphp
+
+                                        @if($isExpired)
+                                            {{-- Jika sudah lewat tanggal tapi status masih available --}}
+                                            <span class="text-danger fw-bold">
+                                                {{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}
+                                            </span>
+                                            <div class="small text-danger">
+                                                <i class="bi bi-exclamation-circle"></i> Sudah lewat!
+                                            </div>
+                                        @else
+                                            {{-- Normal --}}
+                                            {{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($isExpired)
+                                            {{-- Jika expired, jangan kasih tombol Edit, paksa Hapus --}}
+                                            <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Makanan ini sudah expired. Hapus sekarang?');">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    Hapus / Arsipkan
+                                                </button>
+                                            </form>
+                                        @else
+                                            {{-- Tombol Normal --}}
+                                            <a href="{{ route('donor.food.edit', $item->id) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                                            <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus item ini?');">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach
@@ -175,6 +202,11 @@
                                             <span class="badge bg-success">Selesai (Disalurkan)</span>
                                         @elseif($item->status == 'cancelled')
                                             <span class="badge bg-danger">Dibatalkan</span>
+                                        {{-- TAMBAHAN: Badge Khusus Expired --}}
+                                        @elseif($item->status == 'expired')
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-calendar-x"></i> Kedaluwarsa
+                                            </span>
                                         @else
                                             <span class="badge bg-secondary">{{ ucfirst($item->status) }}</span>
                                         @endif
