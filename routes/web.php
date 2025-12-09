@@ -56,7 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/food/{foodItem}', [DonorController::class, 'destroy'])->name('donor.food.destroy');
         Route::patch('/food/{foodItem}/cancel', [DonorController::class, 'cancel'])->name('donor.food.cancel');
         
-        Route::get('/requests', [DonorController::class, 'requests'])->name('donor.requests.index');
+        // Route::get('/requests', [DonorController::class, 'requests'])->name('donor.requests.index');
         Route::patch('/requests/{claim}/approve', [DonorController::class, 'approve'])->name('donor.requests.approve');
         Route::patch('/requests/{claim}/reject', [DonorController::class, 'reject'])->name('donor.requests.reject');
         

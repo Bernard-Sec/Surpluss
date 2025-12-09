@@ -42,12 +42,17 @@
     <div class="card-header bg-white">
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active text-success fw-bold" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">
+                <button class="nav-link active text-secondary fw-bold" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">
                     🟢 Sedang Aktif ({{ $activeItems->count() }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link text-warning fw-bold" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab">
+                <button class="nav-link text-secondary fw-bold" id="requests-tab" data-bs-toggle="tab" data-bs-target="#requests" type="button" role="tab">
+                    🔔 Permintaan ({{ $pendingClaims->count() }})
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link text-secondary fw-bold" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab">
                     🚚 Dalam Proses ({{ $ongoingItems->count() }})
                 </button>
             </li>
@@ -72,7 +77,7 @@
                                 <tr>
                                     <th>Nama Makanan</th>
                                     <th>Jumlah</th>
-                                    <th>Expired</th>
+                                    <th>Tanggal Kedaluwarsa</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -128,6 +133,95 @@
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
                                             </form>
                                         @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
+            </div>
+
+            <div class="tab-pane fade" id="requests" role="tabpanel">
+                @if($pendingClaims->isEmpty())
+                    <div class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                        Belum ada permintaan masuk saat ini.
+                    </div>
+                @else
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Penerima</th>
+                                    <th>Makanan Diminta</th>
+                                    <th>Pesan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($pendingClaims as $claim)
+                                <tr>
+                                    <td>
+                                        <div class="fw-bold">{{ $claim->receiver->name ?? 'User' }}</div>
+                                        <div class="small text-muted">{{ $claim->created_at->diffForHumans() }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            @if($claim->fooditems->photo)
+                                                {{-- Gunakan Accessor photo_url jika sudah dibuat --}}
+                                                <img src="{{ asset($claim->fooditems->photo) }}" width="50" height="50"  class="rounded me-2">
+                                            @endif
+                                            <span>{{ $claim->fooditems->name }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ $claim->message ?? '-' }}</td>
+                                    <td>
+                                        {{-- Tombol Approve --}}
+                                        <form action="{{ route('donor.requests.approve', $claim->id) }}" method="POST" class="d-inline">
+                                            @csrf @method('PATCH')
+                                            <button class="btn btn-sm btn-success fw-bold px-3">
+                                                Terima
+                                            </button>
+                                        </form>
+
+                                        {{-- Tombol Modal Reject --}}
+                                        <button type="button" class="btn btn-sm btn-danger fw-bold px-3" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $claim->id }}">
+                                            Tolak
+                                        </button>
+
+                                        {{-- MODAL REJECT (INCLUDE DI SINI) --}}
+                                        <div class="modal fade" id="rejectModal-{{ $claim->id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <form action="{{ route('donor.requests.reject', $claim->id) }}" method="POST">
+                                                        @csrf @method('PATCH')
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Tolak Permintaan</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Tolak permintaan dari <strong>{{ $claim->receiver->name }}</strong>?</p>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Alasan:</label>
+                                                                <select name="rejection_reason" class="form-select" required>
+                                                                    <option value="">-- Pilih Alasan --</option>
+                                                                    <option value="Jarak terlalu jauh">Jarak terlalu jauh</option>
+                                                                    <option value="Sudah diberikan ke yang lain">Sudah diberikan ke yang lain</option>
+                                                                    <option value="Makanan rusak/basi">Makanan rusak/basi</option>
+                                                                    <option value="Waktu tidak cocok">Waktu tidak cocok</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                            <button type="submit" class="btn btn-danger">Tolak</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- END MODAL --}}
                                     </td>
                                 </tr>
                                 @endforeach

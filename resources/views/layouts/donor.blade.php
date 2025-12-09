@@ -90,7 +90,7 @@
                             </a>
                         </li>
                         @endif
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
                             href="{{ route('how') }}">
                             How It Works
@@ -101,16 +101,16 @@
                             href="{{ route('about') }}">
                             About Us
                             </a>
-                        </li>
+                        </li> --}}
         
 
                         {{-- Extra Donor-only Links --}}
                         @if(auth()->user()->role === 'donor')
-                            <li class="nav-item">
+                            {{-- <li class="nav-item">
                                 <a class="nav-link" href="{{ route('donor.requests.index') }}">
                                     Permintaan Masuk
                                 </a>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('donor.profile') }}">

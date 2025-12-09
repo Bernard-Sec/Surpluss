@@ -32,6 +32,14 @@ class DonorController extends Controller
         })->where('status', 'pending')->count();
 
         // --- PEMISAHAN DATA UNTUK TABS ---
+
+        // Pending Requests (Pindahan dari method requests)
+        $pendingClaims = Claim::whereHas('fooditems', function($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->where('status', 'pending') 
+        ->with(['fooditems', 'receiver']) 
+        ->latest()
+        ->get();
         
         // 1. Tab Aktif: Hanya yang available (Boleh Edit/Delete)
         $activeItems = FoodItem::where('user_id', $userId)
@@ -52,7 +60,7 @@ class DonorController extends Controller
                         ->get();
 
         return view('donor.dashboard', compact(
-            'user', 'totalDonated', 'totalClaims', 
+            'user', 'totalDonated', 'totalClaims', 'pendingClaims',
             'activeItems', 'ongoingItems', 'historyItems'
         ));
     }
