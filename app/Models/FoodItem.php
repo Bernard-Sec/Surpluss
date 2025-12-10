@@ -17,6 +17,7 @@ class FoodItem extends Model
         'photo',
         'quantity',
         'pickup_location',
+        'pickup_time',
         'expires_at',
         'status',
     ];

@@ -26,8 +26,18 @@ class DonorController extends Controller
         $user = Auth::user();
         $userId = $user->id;
 
-        $totalDonated = FoodItem::where('user_id', $userId)->count();
-        $totalClaims = Claim::whereHas('fooditems', function($q) use ($userId) {
+        // A. Total Donasi Aktif (Stok Available)
+        $totalActive = FoodItem::where('user_id', $userId)
+                        ->where('status', 'available')
+                        ->count();
+
+        // B. Total Donasi Selesai (Berhasil Disalurkan)
+        $totalCompleted = FoodItem::where('user_id', $userId)
+                        ->where('status', 'completed')
+                        ->count();
+
+        // C. Permintaan Masuk (Pending Claims)
+        $totalRequests = Claim::whereHas('fooditems', function($q) use ($userId) {
             $q->where('user_id', $userId);
         })->where('status', 'pending')->count();
 
@@ -48,10 +58,12 @@ class DonorController extends Controller
                         ->get();
 
         // 2. Tab Proses: Sedang diklaim orang (Hanya boleh Cancel)
-        $ongoingItems = FoodItem::where('user_id', $userId)
-                        ->where('status', 'claimed')
-                        ->latest()
-                        ->get();
+        $ongoingQuery = Claim::whereHas('fooditems', function($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })
+        ->where('status', 'approved') // Hanya ambil transaksi yang sudah Deal/Approved
+        ->with(['fooditems', 'receiver']);
+        $ongoingItems = $ongoingQuery->get();
 
         // 3. Tab Riwayat: Selesai, Expired, atau Dibatalkan (Read Only)
         $historyItems = FoodItem::where('user_id', $userId)
@@ -60,8 +72,9 @@ class DonorController extends Controller
                         ->get();
 
         return view('donor.dashboard', compact(
-            'user', 'totalDonated', 'totalClaims', 'pendingClaims',
-            'activeItems', 'ongoingItems', 'historyItems'
+            'user', 
+            'totalActive', 'totalCompleted', 'totalRequests', 
+            'pendingClaims', 'activeItems', 'ongoingItems', 'historyItems'
         ));
     }
 
@@ -80,6 +93,7 @@ class DonorController extends Controller
             'description' => 'nullable|string',
             'quantity' => 'required|integer|min:1',
             'pickup_location' => 'required|string',
+            'pickup_time' => 'required|string|max:255',
             'expires_at' => 'required|date|after:today',
             'photo' => 'nullable|image|max:2048', 
         ]);
@@ -97,6 +111,7 @@ class DonorController extends Controller
             'description' => $validated['description'],
             'quantity' => $validated['quantity'],
             'pickup_location' => $validated['pickup_location'],
+            'pickup_time' => $validated['pickup_time'],
             'expires_at' => $validated['expires_at'],
             'photo' => $photoPath,
             'status' => 'available',
@@ -132,6 +147,7 @@ class DonorController extends Controller
             'quantity' => 'required|integer',
             'description' => 'nullable',
             'pickup_location' => 'required',
+            'pickup_time' => 'required|string|max:255',
             'expires_at' => 'required|date',
             'photo' => 'nullable|image|max:2048',
         ]);
@@ -183,6 +199,29 @@ class DonorController extends Controller
         return back()->with('error', 'Status item tidak valid untuk pembatalan.');
     }
 
+    public function cancelApproved(Claim $claim)
+    {
+        // 1. Validasi
+        if ($claim->fooditems->user_id !== Auth::id()) abort(403);
+        if ($claim->status !== 'approved') return back()->with('error', 'Hanya transaksi approved yang bisa dibatalkan disini.');
+
+        $foodItem = $claim->fooditems;
+
+        // 2. Kembalikan Stok
+        $foodItem->quantity += $claim->quantity;
+        
+        // 3. Jika status makanan sebelumnya 'claimed' (habis), kembalikan jadi 'available'
+        if ($foodItem->status == 'claimed') {
+            $foodItem->status = 'available';
+        }
+        $foodItem->save();
+
+        // 4. Update Status Claim jadi Cancelled
+        $claim->update(['status' => 'cancelled']);
+
+        return back()->with('success', 'Pickup dibatalkan. Stok telah dikembalikan ke inventory.');
+    }
+
     public function requests()
     {
         $claims = Claim::whereHas('fooditems', function($query) {
@@ -197,25 +236,46 @@ class DonorController extends Controller
 
     public function approve(Claim $claim)
     {
-        // Ensure the food item belongs to the logged-in user
-        if ($claim->fooditems->user_id !== Auth::id()) abort(403); 
+        // 1. Validasi Pemilik (Security)
+        if ($claim->fooditems->user_id !== Auth::id()) abort(403);
 
+        $foodItem = $claim->fooditems;
+
+        // 2. Cek apakah stok cukup
+        if ($foodItem->quantity < $claim->quantity) {
+            return back()->with('error', 'Gagal menyetujui. Stok tersisa (' . $foodItem->quantity . ') tidak cukup untuk permintaan ini (' . $claim->quantity . ').');
+        }
+
+        // 3. Kurangi Stok
+        $newQuantity = $foodItem->quantity - $claim->quantity;
+        $foodItem->quantity = $newQuantity;
+
+        // 4. Update Status Claim jadi Approved
         $claim->update(['status' => 'approved']);
 
-        // Opsional: Update status makanan jadi 'claimed' agar tidak bisa diklaim orang lain
-        $claim->fooditems->update(['status' => 'claimed']);
+        // 5. Logika Sisa Stok
+        if ($newQuantity <= 0) {
+            // SKENARIO A: Stok Habis
+            // Ubah status makanan jadi 'claimed' agar pindah ke tab "Dalam Proses"
+            $foodItem->status = 'claimed'; 
+            $foodItem->save();
 
-        // 3. LOGIKA BARU: Tolak semua request lain untuk makanan INI
-        // Cari klaim lain yang food_id nya sama, tapi ID klaimnya beda, dan statusnya masih pending
-        Claim::where('food_id', $claim->food_id)
-        ->where('id', '!=', $claim->id) // Jangan reject yang baru saja di-approve
-        ->where('status', 'pending')
-        ->update([
-            'status' => 'rejected',
-            'message' => 'Maaf, makanan ini telah diberikan kepada penerima lain.' // Pesan otomatis
-        ]);
+            // Tolak semua request lain yang masih pending karena barang sudah habis
+            Claim::where('food_id', $foodItem->id)
+                ->where('id', '!=', $claim->id) // Kecuali yang baru saja diapprove
+                ->where('status', 'pending')
+                ->update([
+                    'status' => 'rejected',
+                    'message' => 'Maaf, stok makanan ini telah habis diberikan kepada penerima lain.'
+                ]);
+                
+        } else {
+            // SKENARIO B: Stok Masih Ada
+            // Status makanan tetap 'available' agar bisa diklaim user lain
+            $foodItem->save();
+        }
 
-        return back()->with('success', 'Permintaan berhasil disetujui. Silakan hubungi penerima.');
+        return back()->with('success', 'Permintaan disetujui. Stok telah diperbarui.');
     }
 
     public function reject(Request $request, Claim $claim)

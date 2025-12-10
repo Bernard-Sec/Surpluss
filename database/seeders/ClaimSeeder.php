@@ -37,19 +37,30 @@ class ClaimSeeder extends Seeder
 
         $receivers = User::where('role', 'receiver')->pluck('id')->toArray();
 
-        $foodItems = FoodItem::pluck('id')->toArray();
+        $foodItems = FoodItem::select('id', 'quantity')->get();
 
-        $statuses = ['pending', 'approved', 'rejected', 'completed'];
+        $statuses = ['pending', 'approved', 'rejected', 'completed', 'cancelled'];
 
-        foreach ($foodItems as $foodId) {
+        foreach ($foodItems as $food) {
 
-            if (rand(1, 100) > 65) {
+            if ($food->quantity <= 0) {
                 continue;
             }
 
+            if (rand(1, 100) > 60) {
+                continue;
+            }
+
+            // Logic Quantity:
+            // Ambil angka terkecil antara 'Stok Real' dan '3'
+            // Contoh: Stok 2 -> rand(1, 2)
+            // Contoh: Stok 10 -> rand(1, 3)
+            $claimQty = rand(1, min($food->quantity, 3));
+            
             DB::table('claims')->insert([
-                'food_id' => $foodId,
+                'food_id' => $food->id,
                 'receiver_id' => $faker->randomElement($receivers),
+                'quantity' => $claimQty,
                 'status' => $faker->randomElement($statuses),
                 'message' => $faker->boolean(60) ? $faker->sentence(6) : null,
                 'created_at' => now(),

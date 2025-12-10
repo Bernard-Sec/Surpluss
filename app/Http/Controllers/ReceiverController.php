@@ -117,6 +117,12 @@ class ReceiverController extends Controller
 
     public function storeClaim(Request $request, FoodItem $foodItem)
     {
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:' . $foodItem->quantity,
+        ], [
+            'quantity.max' => 'Jumlah permintaan melebihi stok yang tersedia.'
+        ]);
+
         // 1. Cek status
         if ($foodItem->status !== 'available') {
             return back()->with('error', 'Item tidak tersedia.');
@@ -142,6 +148,7 @@ class ReceiverController extends Controller
         \App\Models\Claim::create([
             'food_id' => $foodItem->id,
             'receiver_id' => \Illuminate\Support\Facades\Auth::id(),
+            'quantity' => $request->quantity,
             'status' => 'pending',
             'message' => 'Saya ingin mengklaim makanan ini.',
         ]);

@@ -71,6 +71,12 @@ class FoodItemSeeder extends Seeder
                     'photo' => "images/sample-$index.jpg",
                     'quantity' => rand(1, 10),
                     'pickup_location' => $faker->address(),
+                    'pickup_time' => $faker->randomElement([
+                        '09.00 - 12.00 WIB', 
+                        '13.00 - 15.00 WIB', 
+                        '16.00 - 20.00 WIB', 
+                        'Bebas (Hubungi via WA)'
+                    ]),
                     'expires_at' => $faker->dateTimeBetween('now', '+6 days'),
                     'status' => 'available',
                     'created_at' => now(),

@@ -63,6 +63,20 @@
                     <div class="d-grid gap-2 mt-4">
                         <form action="{{ route('receiver.claim.store', $foodItem->id) }}" method="POST">
                             @csrf
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Jumlah yang ingin diminta:</label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                        name="quantity" 
+                                        class="form-control text-center fw-bold" 
+                                        value="1" 
+                                        min="1" 
+                                        max="{{ $foodItem->quantity }}" 
+                                        required>
+                                    <span class="input-group-text">dari {{ $foodItem->quantity }} Porsi Tersedia</span>
+                                </div>
+                                <div class="form-text">Sesuaikan dengan kebutuhan Anda agar dapat berbagi dengan yang lain.</div>
+                            </div>
                             <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold">
                                 Ajukan Permintaan (Claim)
                             </button>

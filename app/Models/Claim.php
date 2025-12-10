@@ -12,6 +12,7 @@ class Claim extends Model
     protected $fillable = [
         'food_id',
         'receiver_id',
+        'quantity',
         'status',
         'message',
     ];

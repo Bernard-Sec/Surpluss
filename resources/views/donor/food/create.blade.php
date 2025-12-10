@@ -51,6 +51,12 @@
                         <small class="text-muted">Default: Alamat profil Anda.</small>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Waktu Pengambilan</label>
+                        <input type="text" name="pickup_time" class="form-control" placeholder="Contoh: 15.00 - 17.00 WIB" required>
+                        <div class="form-text text-muted">Tentukan jam berapa penerima bisa mengambil makanan.</div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Tanggal Kadaluarsa (Estimasi)</label>

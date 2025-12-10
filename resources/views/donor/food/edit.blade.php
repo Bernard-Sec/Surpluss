@@ -53,6 +53,12 @@
                         <small class="text-muted">Default: Alamat profil Anda.</small>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Waktu Pengambilan (Pick Up Time)</label>
+                        <input type="text" name="pickup_time" class="form-control" value="{{ old('pickup_time', $foodItem->pickup_time) }}" required>
+                        <div class="form-text text-muted">Update jam pengambilan jika diperlukan.</div>
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Tanggal Kadaluarsa (Estimasi)</label>

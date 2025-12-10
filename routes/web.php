@@ -59,6 +59,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Route::get('/requests', [DonorController::class, 'requests'])->name('donor.requests.index');
         Route::patch('/requests/{claim}/approve', [DonorController::class, 'approve'])->name('donor.requests.approve');
         Route::patch('/requests/{claim}/reject', [DonorController::class, 'reject'])->name('donor.requests.reject');
+        Route::patch('/claims/{claim}/cancel-approved', [DonorController::class, 'cancelApproved'])
+    ->name('donor.claims.cancel');
         
         Route::get('/profile', [DonorController::class, 'profile'])->name('donor.profile');
         Route::get('/profile/edit', [DonorController::class, 'editProfile'])->name('donor.profile.edit');
