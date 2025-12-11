@@ -137,13 +137,13 @@ class ReceiverController extends Controller
             return back()->with('error', 'Anda tidak bisa mengklaim makanan Anda sendiri.');
         }
 
-        $existing = \App\Models\Claim::where('food_id', $foodItem->id)
-                         ->where('receiver_id', \Illuminate\Support\Facades\Auth::id())
-                         ->first();
+        // $existing = \App\Models\Claim::where('food_id', $foodItem->id)
+        //                  ->where('receiver_id', \Illuminate\Support\Facades\Auth::id())
+        //                  ->first();
 
-        if ($existing) {
-            return back()->with('error', 'Anda sudah mengajukan klaim untuk makanan ini sebelumnya.');
-        }
+        // if ($existing) {
+        //     return back()->with('error', 'Anda sudah mengajukan klaim untuk makanan ini sebelumnya.');
+        // }
 
         \App\Models\Claim::create([
             'food_id' => $foodItem->id,
@@ -183,7 +183,7 @@ class ReceiverController extends Controller
 
     public function history(Request $request)
     {
-        $userId = Auth::id() ?? 2;
+        $userId = Auth::id();
 
         // Ambil parameter dari URL, default-nya urutkan berdasarkan tanggal terbaru (desc)
         $sort = $request->get('sort', 'date'); 

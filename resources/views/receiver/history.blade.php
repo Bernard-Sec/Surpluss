@@ -3,12 +3,16 @@
 @section('content')
 <div class="container py-4">
     
+    {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-success">Riwayat Permintaan</h3>
+        <div>
+            <h3 class="fw-bold text-success">Riwayat Permintaan</h3>
+            <p class="text-muted mb-0">Pantau status permintaan makananmu di sini.</p>
+        </div>
         
-        <form action="{{ route('receiver.history') }}" method="GET" class="d-flex gap-2 align-items-center">
-            <label class="text-muted small">Urutkan:</label>
-            <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+        <form action="{{ route('receiver.history') }}" method="GET" class="d-flex gap-2 align-items-center bg-white p-2 rounded shadow-sm border">
+            <label class="text-muted small fw-bold ms-2">Urutkan:</label>
+            <select name="sort" class="form-select form-select-sm border-0 bg-light" onchange="this.form.submit()">
                 <option value="date" {{ request('sort') == 'date' ? 'selected' : '' }}>Tanggal Terbaru</option>
                 <option value="food_name" {{ request('sort') == 'food_name' ? 'selected' : '' }}>Nama Makanan (A-Z)</option>
                 <option value="status" {{ request('sort') == 'status' ? 'selected' : '' }}>Status</option>
@@ -17,158 +21,110 @@
     </div>
 
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success border-0 shadow-sm mb-4"><i class="bi bi-check-circle me-2"></i>{{ session('success') }}</div>
     @endif
     @if(session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
+        <div class="alert alert-danger border-0 shadow-sm mb-4"><i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}</div>
     @endif
 
-    <div class="card shadow-sm border-0">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        {{-- 1. SORT BY NAMA MAKANAN --}}
-                        <th class="ps-4">
-                            <a href="{{ route('receiver.history', [
-                                    'sort' => 'food_name', 
-                                    'direction' => (request('sort') == 'food_name' && request('direction') == 'asc') ? 'desc' : 'asc'
-                                ]) }}" 
-                            class="text-dark text-decoration-none fw-bold">
-                                
-                                Makanan
-                                
-                                {{-- LOGIC IKON --}}
-                                @if(request('sort') == 'food_name')
-                                    @if(request('direction') == 'asc') ↑ @else ↓ @endif
-                                @else
-                                    <span class="text-muted small">+</span>
-                                @endif
-                            </a>
-                        </th>
-
-                        {{-- 2. SORT BY DONOR (Tidak disort, teks biasa) --}}
-                        <th>Donor</th>
-
-                        {{-- 3. SORT BY TANGGAL --}}
-                        <th>
-                            <a href="{{ route('receiver.history', [
-                                    'sort' => 'date', 
-                                    'direction' => (request('sort') == 'date' && request('direction') == 'desc') ? 'asc' : 'desc'
-                                ]) }}" 
-                            class="text-dark text-decoration-none fw-bold">
-                            
-                                Tanggal Request
-
-                                @if(request('sort') == 'date' || !request('sort')) {{-- Default active --}}
-                                    @if(request('direction') == 'asc') ↑ @else ↓ @endif
-                                @else
-                                    <span class="text-muted small">+</span>
-                                @endif
-                            </a>
-                        </th>
-
-                        {{-- 4. SORT BY STATUS --}}
-                        <th>
-                            <a href="{{ route('receiver.history', [
-                                    'sort' => 'status', 
-                                    'direction' => (request('sort') == 'status' && request('direction') == 'asc') ? 'desc' : 'asc'
-                                ]) }}" 
-                            class="text-dark text-decoration-none fw-bold">
-                            
-                                Status
-
-                                @if(request('sort') == 'status')
-                                    @if(request('direction') == 'asc') ↑ @else ↓ @endif
-                                @else
-                                    <span class="text-muted small">+</span>
-                                @endif
-                            </a>
-                        </th>
-
-                        <th class="text-end pe-4">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($claimsHistory as $claim)
-                    <tr>
-                        <td class="ps-4">
-                            <div class="d-flex align-items-center gap-3">
-                                @if($claim->fooditems && $claim->fooditems->photo)
-                                    <img src="{{ asset($claim->fooditems->photo) }}" 
-                                         class="rounded object-fit-cover" width="50" height="50">
-                                @else
-                                    <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" 
-                                         style="width:50px; height:50px;">🍽️</div>
-                                @endif
-                                <div>
-                                    <div class="fw-bold">{{ $claim->fooditems->name ?? 'Item Dihapus' }}</div>
-                                    <small class="text-muted">{{ $claim->fooditems->quantity ?? '-' }} Porsi</small>
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr class="text-uppercase small text-secondary">
+                            {{-- SORT HEADERS --}}
+                            <th class="ps-4 py-3">Makanan</th>
+                            <th class="py-3">Donor</th>
+                            <th class="py-3">Tanggal Request</th>
+                            <th class="py-3">Status</th>
+                            <th class="text-end pe-4 py-3">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($claimsHistory as $claim)
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center gap-3">
+                                    @if($claim->fooditems && $claim->fooditems->photo)
+                                        <img src="{{ asset($claim->fooditems->photo) }}" 
+                                             class="rounded-3 shadow-sm object-fit-cover" width="50" height="50">
+                                    @else
+                                        <div class="bg-light rounded-3 d-flex align-items-center justify-content-center text-muted border" 
+                                             style="width:50px; height:50px;"><i class="bi bi-egg-fried"></i></div>
+                                    @endif
+                                    <div>
+                                        <div class="fw-bold text-dark">{{ $claim->fooditems->name ?? 'Item Dihapus' }}</div>
+                                        <small class="text-muted">{{ $claim->fooditems->quantity ?? '-' }} Porsi</small>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            {{ $claim->fooditems->users->name ?? 'Unknown' }}
-                        </td>
-                        <td>
-                            {{ $claim->created_at->format('d M Y') }}<br>
-                            <small class="text-muted">{{ $claim->created_at->format('H:i') }}</small>
-                        </td>
-                        <td>
-                            @if($claim->status == 'pending')
-                                <span class="badge bg-warning text-dark">Pending</span>
-                            @elseif($claim->status == 'approved')
-                                <span class="badge bg-success">Disetujui</span>
-                                <div class="alert alert-primary py-1 px-2 mt-1 mb-0 text-center border-0">
-                                    <small class="d-block text-uppercase" style="font-size: 0.65rem;">Kode Pickup</small>
-                                    <span class="fs-5 fw-bold font-monospace">{{ $claim->verification_code }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center text-secondary">
+                                    <i class="bi bi-person-circle me-2"></i>
+                                    {{ $claim->fooditems->users->name ?? 'Unknown' }}
                                 </div>
-                                <div class="text-muted small mt-1" style="font-size: 0.7rem;">
-                                    Tunjukkan ke donatur saat ambil.
-                                </div>
-                            @elseif($claim->status == 'completed')
-                                <span class="badge bg-success">Selesai</span>
-                            @elseif($claim->status == 'cancelled')
-                                <span class="badge bg-secondary">Dibatalkan</span>
-                            @else
-                                <span class="badge bg-danger">Ditolak</span>
-                            @endif
-                        </td>
-                        <td class="text-end pe-4">
-                            <div class="d-flex justify-content-end gap-2">
-                                @if($claim->fooditems)
-                                    <a href="{{ route('receiver.food.show', $claim->food_id) }}" 
-                                       class="btn btn-sm btn-outline-primary">
-                                        Detail
-                                    </a>
+                            </td>
+                            <td>
+                                <div class="text-dark">{{ $claim->created_at->format('d M Y') }}</div>
+                                <small class="text-muted">{{ $claim->created_at->format('H:i') }} WIB</small>
+                            </td>
+                            <td>
+                                @if($claim->status == 'pending')
+                                    <span class="badge bg-warning text-dark border border-warning">Pending</span>
+                                @elseif($claim->status == 'approved')
+                                    <span class="badge bg-success">Disetujui</span>
+                                    <div class="mt-2">
+                                        <div class="badge bg-light text-dark font-monospace border shadow-sm p-2">
+                                            KODE: <span class="fw-bold fs-6">{{ $claim->verification_code }}</span>
+                                        </div>
+                                    </div>
+                                @elseif($claim->status == 'completed')
+                                    <span class="badge bg-primary">Selesai</span>
+                                @elseif($claim->status == 'cancelled')
+                                    <span class="badge bg-secondary">Dibatalkan</span>
+                                @else
+                                    <span class="badge bg-danger">Ditolak</span>
                                 @endif
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-2">
+                                    @if($claim->fooditems)
+                                        <a href="{{ route('receiver.food.show', $claim->food_id) }}" 
+                                           class="btn btn-sm btn-outline-success">
+                                            Detail
+                                        </a>
+                                    @endif
 
-                                @if(in_array($claim->status, ['pending', 'claimed']))
-                                    <form action="{{ route('receiver.claim.cancel', $claim->id) }}" method="POST" 
-                                          onsubmit="return confirm('Yakin batalkan permintaan ini? Makanan akan kembali tersedia untuk orang lain.')">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            Batal
-                                        </button>
-                                    </form>
-                                @endif
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-5 text-muted">
-                            Belum ada riwayat permintaan.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="d-flex justify-content-center mt-3">
-            {{ $claimsHistory->links() }}
+                                    @if(in_array($claim->status, ['pending', 'claimed']))
+                                        <form action="{{ route('receiver.claim.cancel', $claim->id) }}" method="POST" 
+                                              onsubmit="return confirm('Yakin batalkan permintaan ini? Makanan akan kembali tersedia untuk orang lain.')">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Batalkan Permintaan">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="80" class="mb-3 opacity-25">
+                                <p class="text-muted">Belum ada riwayat permintaan.</p>
+                                <a href="{{ route('receiver.dashboard') }}" class="btn btn-success btn-sm">Cari Makanan</a>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="d-flex justify-content-center mt-3 mb-3">
+                {{ $claimsHistory->links('pagination::bootstrap-5') }}
+            </div>
         </div>
     </div>
 </div>
