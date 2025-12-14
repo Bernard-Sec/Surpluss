@@ -51,7 +51,7 @@
 <div class="row mb-4 align-items-center">
     <div class="col-md-8">
         <h2 class="fw-bold text-success">Halo, {{ Auth::user()->name }}! 👋</h2>
-        <p class="text-muted">Temukan makanan gratis di sekitarmu hari ini.</p>
+        <p class="text-muted">Temukan makanan layak konsumsi di sekitarmu hari ini.</p>
     </div>
     {{-- Optional: Stat Cards if needed, otherwise kept simple --}}
 </div>
