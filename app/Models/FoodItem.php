@@ -40,19 +40,14 @@ class FoodItem extends Model
 
     public function getPhotoUrlAttribute()
     {
-        // 1. Jika tidak ada foto, kembalikan placeholder/null
         if (!$this->photo) {
-            return 'https://placehold.co/800x400?text=No+Image'; // Opsional: default image
+            return 'https://placehold.co/800x400?text=No+Image';
         }
 
-        // 2. Cek apakah ini foto sample (dari seeder)
-        // Kita cek apakah stringnya mengandung "images/sample-"
         if (Str::startsWith($this->photo, 'images/sample-')) {
             return asset($this->photo);
         }
 
-        // 3. Jika bukan sample, berarti ini dari Upload (Storage)
-        // Kita harus tambahkan prefix 'storage/' agar bisa diakses
         return asset('storage/' . $this->photo);
     }
 }

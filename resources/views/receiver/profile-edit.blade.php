@@ -123,7 +123,6 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         
-        // 1. Setup Peta (Default: Monas Jakarta)
         let defaultLat = -6.175392; 
         let defaultLng = 106.827153;
         
@@ -136,14 +135,12 @@
 
         var marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
 
-        // 2. Fungsi Reverse Geocoding (LatLong -> Alamat)
         async function getAddress(lat, lng) {
             document.getElementById('address').placeholder = "Sedang mencari nama jalan...";
             try {
                 let response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
                 let data = await response.json();
                 if(data && data.display_name) {
-                    // Ambil 4 bagian pertama dari alamat agar tidak terlalu panjang
                     let shortAddress = data.display_name.split(',').slice(0, 4).join(',');
                     document.getElementById('address').value = shortAddress;
                 }
@@ -152,19 +149,16 @@
             }
         }
 
-        // 3. Event Listener Marker Digeser
         marker.on('dragend', function(e) {
             var position = marker.getLatLng();
             getAddress(position.lat, position.lng);
         });
 
-        // 4. Event Listener Peta Diklik
         map.on('click', function(e) {
             marker.setLatLng(e.latlng);
             getAddress(e.latlng.lat, e.latlng.lng);
         });
 
-        // 5. Fungsi Lokasi Saya (GPS)
         locateUser = function() {
             if (navigator.geolocation) {
                 document.getElementById('address').placeholder = "Mendeteksi lokasi GPS...";
@@ -176,7 +170,6 @@
                         map.setView([userLat, userLng], 16);
                         marker.setLatLng([userLat, userLng]);
                         
-                        // Update input text dengan hasil GPS
                         getAddress(userLat, userLng);
                     },
                     function(error) {

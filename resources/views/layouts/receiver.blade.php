@@ -11,9 +11,8 @@
             height: 200px;
             object-fit: cover;
         }
-        /* Custom Navbar Styles */
         .navbar-custom {
-            background-color: #198754; /* Fallback color */
+            background-color: #198754; 
             background: linear-gradient(135deg, #198754 0%, #157347 100%);
             box-shadow: 0 4px 20px rgba(25, 135, 84, 0.15);
         }
@@ -98,47 +97,30 @@
                     </li>
                     @endguest
                     
+                    @auth
                     
-                    {{-- =============================
-                        AUTHENTICATED USER
-                        ============================== --}}
-                        @auth
-                        
                         {{-- Role-based Dashboard --}}
-                        @if(auth()->user()->role === 'donor')
+                        @if(auth()->user()->role === 'receiver')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('donor.dashboard') }}">
+                            <a class="nav-link" href="{{ route('receiver.dashboard') }}">
                                 Dashboard
                             </a>
                         </li>
-                        @elseif(auth()->user()->role === 'receiver')
+                        @elseif(auth()->user()->role === 'donor')
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('receiver.dashboard') ? 'active' : '' }}" href="{{ route('receiver.dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('donor.dashboard') ? 'active' : '' }}" href="{{ route('donor.dashboard') }}">
                                 Home
                             </a>
                         </li>
                         @endif
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('how') ? 'active' : '' }}"
-                            href="{{ route('how') }}">
-                            How It Works
-                            </a>
-                        </li> --}}
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}"
-                            href="{{ route('about') }}">
-                            About Us
-                            </a>
-                        </li> --}}
-                        {{-- Extra Donor-only Links --}}
                         @if(auth()->user()->role === 'receiver')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('receiver.profile') ? 'active' : '' }}" 
-                                href="{{ route('receiver.profile') }}">Profile</a>
+                                href="{{ route('receiver.profile') }}">Profil</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('receiver.history') ? 'active' : '' }}" 
-                                href="{{ route('receiver.history') }}">History</a>
+                                href="{{ route('receiver.history') }}">Riwayat</a>
                             </li>
                         @endif
                         {{-- Logout --}}

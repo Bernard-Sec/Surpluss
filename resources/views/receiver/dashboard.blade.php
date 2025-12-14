@@ -47,7 +47,7 @@
     .letter-spacing-1 { letter-spacing: 0.5px; }
 </style>
 
-{{-- HEADER SECTION (MATCHING DONOR STYLE) --}}
+{{-- HEADER SECTION --}}
 <div class="row mb-4 align-items-center">
     <div class="col-md-8">
         <h2 class="fw-bold text-success">Halo, {{ Auth::user()->name }}! 👋</h2>
@@ -56,13 +56,13 @@
     {{-- Optional: Stat Cards if needed, otherwise kept simple --}}
 </div>
 
-{{-- SEARCH & FILTER SECTION (Redesigned) --}}
+{{-- SEARCH & FILTER SECTION --}}
 <div class="card border-0 shadow-lg mb-5 rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #ffffff 0%, #f8fcf9 100%);">
     <div class="card-body p-4 p-md-4">
         <form action="{{ route('receiver.dashboard') }}" method="GET">
             <div class="row g-3 align-items-end">
                 
-                {{-- 1. Input Pencarian (Lebih Dominan) --}}
+                {{-- 1. Input Pencarian --}}
                 <div class="col-md-5">
                     <label class="form-label fw-bold text-success small text-uppercase letter-spacing-1">
                         <i class="bi bi-search me-1"></i> Apa yang kamu cari?
@@ -116,7 +116,7 @@
                 </div>
             </div>
             
-            {{-- Optional: Quick Filter Tags (Badge) di bawah form --}}
+            {{-- Quick Filter Tags  --}}
             <div class="mt-3 d-flex gap-2 align-items-center overflow-auto pb-2" style="scrollbar-width: none;">
                 <span class="small text-muted fw-semibold me-1 text-nowrap">Populer:</span>
                 <a href="{{ route('receiver.dashboard', ['search' => 'Nasi']) }}" class="badge bg-white text-secondary border shadow-sm text-decoration-none rounded-pill px-3 py-2 fw-normal hover-bg-success hover-text-white transition-all">

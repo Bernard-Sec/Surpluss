@@ -15,7 +15,7 @@
             <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
                 {{-- Hero Image --}}
                 <div class="position-relative bg-light">
-                    {{-- Logic Gambar: Ambil dari relasi fooditems milik claim --}}
+                    {{-- Logic Gambar --}}
                     @if($claim->fooditems && $claim->fooditems->photo)
                         <img src="{{ asset($claim->fooditems->photo_url) }}" 
                              class="w-100" 
@@ -123,7 +123,7 @@
                         <p class="text-secondary lh-lg mb-0">{{ $claim->fooditems->description ?? 'Tidak ada deskripsi detail.' }}</p>
                     </div>
 
-                    {{-- STATUS TRANSAKSI SECTION (Pengganti Form Claim) --}}
+                    {{-- STATUS TRANSAKSI SECTION --}}
                     <div class="card border-0 shadow-sm rounded-3 p-4 {{ $claim->status == 'cancelled' || $claim->status == 'rejected' ? 'bg-danger bg-opacity-10' : ($claim->status == 'completed' ? 'bg-success bg-opacity-10' : 'bg-warning bg-opacity-10') }}">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h6 class="fw-bold mb-0 text-dark">Status Transaksi</h6>
