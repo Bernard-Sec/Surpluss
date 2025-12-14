@@ -4,7 +4,7 @@
         html, body {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: transparent !important; 
-            font-family: 'Inter', sans-serif;
+            /* font-family: 'Inter', sans-serif; */
         }
         div[class*="min-h-screen"], div[class*="bg-gray-100"] {
             background-color: transparent !important;
