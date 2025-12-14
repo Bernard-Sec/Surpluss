@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Custom Navbar Styles (Matching Receiver) */
         .navbar-custom {
             background-color: #198754;
             background: linear-gradient(135deg, #198754 0%, #157347 100%);
@@ -46,12 +45,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3 sticky-top">
         <div class="container">
             
-            {{-- LOGO --}}
             <a class="navbar-brand fw-bold d-flex align-items-center gap-2 fs-4" href="{{ route('home') }}">
                 <i class="bi bi-flower1"></i> Surplus
             </a>
 
-            {{-- Mobile Toggle --}}
             <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -59,9 +56,6 @@
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto align-items-center gap-2">
 
-                    {{-- =============================
-                        GUEST USER
-                    ============================== --}}
                     @guest
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">
@@ -85,12 +79,7 @@
                         </li>
                     @endguest
                     
-                    {{-- =============================
-                        AUTHENTICATED USER
-                    ============================== --}}
                     @auth
-                        
-                        {{-- Role-based Dashboard Link --}}
                         @if(auth()->user()->role === 'donor')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('donor.dashboard') ? 'active' : '' }}" href="{{ route('donor.dashboard') }}">
@@ -105,7 +94,6 @@
                             </li>
                         @endif
 
-                        {{-- Extra Donor-only Links --}}
                         @if(auth()->user()->role === 'donor')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('donor.profile') ? 'active' : '' }}" href="{{ route('donor.profile') }}">
@@ -114,7 +102,6 @@
                             </li>
                         @endif
 
-                        {{-- Logout --}}
                         <li class="nav-item ms-lg-3">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -126,7 +113,6 @@
 
                     @endauth
 
-                    {{-- LANGUAGE SWITCH --}}
                     <li class="nav-item ms-lg-3">
                         <div class="bg-white bg-opacity-25 rounded-pill px-2 py-1">
                              <x-language-switch />
@@ -140,7 +126,6 @@
 
 
     <div class="container mt-5 pt-2 pb-5">
-        {{-- Success Message Alert --}}
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 rounded-3" role="alert">
                 <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}

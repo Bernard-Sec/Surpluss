@@ -50,7 +50,6 @@
 </div>
 
 <div class="row mb-5 g-2">
-    {{-- KOLOM 1: DONASI AKTIF (Biru) --}}
     <div class="col-6 col-md-3">
         <div class="card border-0 shadow-sm bg-primary text-dark h-100">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
@@ -66,7 +65,6 @@
         </div>
     </div>
     
-    {{-- KOLOM 3: PERMINTAAN MASUK (Kuning) --}}
     <div class="col-6 col-md-3">
         <div class="card border-0 shadow-sm text-dark h-100" style="background-color: #f75151;">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
@@ -82,7 +80,6 @@
         </div>
     </div>
 
-    {{-- KOLOM 2: KLAIM SELESAI (Hijau) --}}
     <div class="col-6 col-md-3">
         <div class="card border-0 shadow-sm bg-warning text-dark h-100">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
@@ -98,7 +95,6 @@
         </div>
     </div>
 
-    {{-- KOLOM 2: DONASI SELESAI (Hijau) --}}
     <div class="col-6 col-md-3">
         <div class="card border-0 shadow-sm text-dark h-100" style="background-color: #53d170;">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
@@ -171,7 +167,6 @@
                                             @endif
                                             <div>
                                                 <span class="d-block">{{ $item->name }}</span>
-                                                {{-- Tampilkan Kategori sebagai badge kecil --}}
                                                 <span class="badge bg-light text-secondary border mt-1">
                                                     {{ $item->category->name ?? 'Umum' }}
                                                 </span>
@@ -180,11 +175,9 @@
                                     </td>
                                     
                                     <td class="text-center">
-                                        {{-- Hapus fw-bold dan fs-5 --}}
                                         <span class="text-dark">{{ $item->quantity }}</span> 
                                     </td>
 
-                                    {{-- TAMPILKAN PICKUP TIME DI SINI --}}
                                     <td>
                                         <div class="d-flex align-items-center text-dark">
                                             <i class="bi bi-clock me-2 text-primary"></i>
@@ -199,7 +192,6 @@
                                             <div class="small text-danger"><i class="bi bi-exclamation-circle"></i> Expired</div>
                                         @else
                                             <span class="text-dark">{{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}</span>
-                                            {{-- Hitung sisa hari --}}
                                             <div class="small text-muted">
                                                 {{ \Carbon\Carbon::parse($item->expires_at)->locale('id')->diffForHumans() }}
                                             </div>
@@ -248,7 +240,6 @@
                             <tbody>
                                 @foreach($pendingClaims as $claim)
                                 <tr>
-                                    {{-- KOLOM PENERIMA --}}
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="me-2">
@@ -256,7 +247,6 @@
                                             </div>
                                             <div>
                                                 <span class="d-block text-dark">{{ $claim->receiver->name ?? 'User' }}</span>
-                                                {{-- Waktu Request --}}
                                                 <small class="text-muted">
                                                     <i class="bi bi-clock-history"></i> {{ $claim->created_at->locale('id')->diffForHumans() }}
                                                 </small>
@@ -264,7 +254,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- KOLOM MAKANAN --}}
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($claim->fooditems && $claim->fooditems->photo)
@@ -276,7 +265,6 @@
                                             @endif
                                             <div>
                                                 <span class="d-block text-dark">{{ $claim->fooditems->name ?? '-' }}</span>
-                                                {{-- Info Sisa Stok (Opsional, membantu keputusan) --}}
                                                 <small class="text-secondary badge bg-light border text-dark">
                                                     Sisa: {{ $claim->fooditems->quantity ?? 0 }}
                                                 </small>
@@ -288,7 +276,6 @@
                                         <span class="text-dark">{{ $claim->quantity }}</span>
                                     </td>
 
-                                    {{-- KOLOM PESAN --}}
                                     <td>
                                         @if($claim->message)
                                             <div class="text-muted small fst-italic">"{{ Str::limit($claim->message, 50) }}"</div>
@@ -297,10 +284,8 @@
                                         @endif
                                     </td>
 
-                                    {{-- KOLOM AKSI --}}
                                     <td>
                                         <div class="d-flex gap-2">
-                                            {{-- Tombol TERIMA --}}
                                             <form action="{{ route('donor.requests.approve', $claim->id) }}" method="POST">
                                                 @csrf @method('PATCH')
                                                 <button class="btn btn-sm btn-outline-success px-3" title="Terima Permintaan">
@@ -308,13 +293,11 @@
                                                 </button>
                                             </form>
 
-                                            {{-- Tombol TOLAK (Modal Trigger) --}}
                                             <button type="button" class="btn btn-sm btn-outline-danger px-3" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $claim->id }}" title="Tolak">
                                                 <i class="bi bi-x-lg"></i>
                                             </button>
                                         </div>
 
-                                        {{-- MODAL REJECT (Tetap di dalam loop agar ID unik) --}}
                                         <div class="modal fade" id="rejectModal-{{ $claim->id }}" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -347,7 +330,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- END MODAL --}}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -377,7 +359,6 @@
                             <tbody>
                                 @foreach($ongoingItems as $claim)
                                 <tr>
-                                    {{-- KOLOM PENERIMA --}}
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="me-2">
@@ -385,7 +366,6 @@
                                             </div>
                                             <div>
                                                 <span class="d-block text-dark">{{ $claim->receiver->name ?? 'User' }}</span>
-                                                {{-- Opsional: Info Kontak --}}
                                                 <small class="text-muted" style="">
                                                     {{ $claim->receiver->phone ?? 'No Hp: -' }}
                                                 </small>
@@ -393,7 +373,6 @@
                                         </div>
                                     </td>
 
-                                    {{-- KOLOM NAMA MAKANAN --}}
                                     <td>
                                         <div class="d-flex align-items-center">
                                             @if($claim->fooditems && $claim->fooditems->photo)
@@ -403,22 +382,18 @@
                                         </div>
                                     </td>
 
-                                    {{-- KOLOM JUMLAH --}}
                                     <td class="text-center">
                                         <span class="">{{ $claim->quantity }}</span>
                                     </td>
 
-                                    {{-- KOLOM AKSI --}}
                                     <td>
                                         <div class="d-flex gap-2">
-                                            {{-- TOMBOL VERIFIKASI --}}
                                             <button type="button" class="btn btn-sm btn-outline-success" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#verifyModal-{{ $claim->id }}">
                                                 <i class="bi bi-qr-code-scan"></i> Konfirmasi
                                             </button>
 
-                                            {{-- Tombol Batal (yg lama) --}}
                                             <form action="{{ route('donor.claims.cancel', $claim->id) }}" method="POST" onsubmit="return confirm('...');">
                                                 @csrf @method('PATCH')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -427,7 +402,6 @@
                                             </form>
                                         </div>
 
-                                        {{-- MODAL VERIFIKASI --}}
                                         <div class="modal fade" id="verifyModal-{{ $claim->id }}" tabindex="-1">
                                             <div class="modal-dialog modal-sm modal-dialog-centered">
                                                 <div class="modal-content">
@@ -474,7 +448,6 @@
 
                 <div class="card border-0 bg-light mb-3">
                     <div class="card-body p-2">
-                        {{-- SUB-TABS NAVIGATION --}}
                         <ul class="nav nav-pills" id="historySubTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active small" id="history-claims-tab" data-bs-toggle="pill" data-bs-target="#history-claims" type="button" role="tab">
@@ -490,10 +463,8 @@
                     </div>
                 </div>
 
-                {{-- SUB-TABS CONTENT --}}
                 <div class="tab-content" id="historySubTabContent">
                     
-                    {{-- SUB-TAB 1: RIWAYAT CLAIM (Transaksi per User) --}}
                     <div class="tab-pane fade show active" id="history-claims" role="tabpanel">
                         @if($historyClaims->isEmpty())
                             <p class="text-center text-muted py-4">Belum ada riwayat transaksi penerima.</p>
@@ -553,7 +524,6 @@
                         @endif
                     </div>
 
-                    {{-- SUB-TAB 2: RIWAYAT FOOD ITEM (Stok Makanan) --}}
                     <div class="tab-pane fade" id="history-items" role="tabpanel">
                         @if($historyItems->isEmpty())
                             <p class="text-center text-muted py-4">Belum ada riwayat stok makanan.</p>
@@ -563,7 +533,6 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th>Nama Makanan</th>
-                                            {{-- <th>Dibuat Tanggal</th> --}}
                                             <th>Status Akhir</th>
                                         </tr>
                                     </thead>
@@ -578,7 +547,6 @@
                                                     <span class="">{{ $item->name }}</span>
                                                 </div>
                                             </td>
-                                            {{-- <td>{{ $item->created_at->format('d M Y') }}</td> --}}
                                             <td>
                                                 @if($item->status == 'completed')
                                                     <span class="badge bg-success">Didonasikan</span>

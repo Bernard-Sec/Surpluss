@@ -64,7 +64,6 @@
                                                 <div class="mb-3">
                                                     <label for="reason-select-{{ $claim->id }}" class="form-label">Pilih Alasan Penolakan:</label>
                                                     
-                                                    {{-- Langsung gunakan name="rejection_reason" di sini --}}
                                                     <select name="rejection_reason" id="reason-select-{{ $claim->id }}" class="form-select" required>
                                                         <option value="">-- Pilih Alasan --</option>
                                                         <option value="Maaf, lokasi Anda terlalu jauh untuk penjemputan.">Jarak Terlalu Jauh</option>

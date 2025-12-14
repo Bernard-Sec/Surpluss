@@ -12,7 +12,6 @@
     @endif
 
     <div class="row g-4">
-        {{-- LEFT COLUMN: PROFILE CARD --}}
         <div class="col-md-4">
             <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
                 <div class="bg-success bg-gradient p-4 text-center" style="height: 100px;"></div>
@@ -74,12 +73,9 @@
             </div>
         </div>
 
-        {{-- RIGHT COLUMN: STATS & HISTORY --}}
         <div class="col-md-8">
             
-            {{-- COMPACT STATS CARDS (Updated Layout) --}}
             <div class="row mb-4 g-2">
-                {{-- 1. DONASI AKTIF (Biru - Text Putih) --}}
                 <div class="col-6 col-md-3">
                     <div class="card border-0 shadow-sm bg-primary text-white h-100 rounded-4">
                         <div class="card-body p-3 d-flex align-items-center justify-content-between">
@@ -94,7 +90,6 @@
                     </div>
                 </div>
                 
-                {{-- 2. PERMINTAAN MASUK (Merah/Pink - Text Gelap) --}}
                 <div class="col-6 col-md-3">
                     <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #f75151; color: white;">
                         <div class="card-body p-3 d-flex align-items-center justify-content-between">
@@ -109,7 +104,6 @@
                     </div>
                 </div>
 
-                {{-- 3. KLAIM SELESAI (Kuning - Text Gelap) --}}
                 <div class="col-6 col-md-3">
                     <div class="card border-0 shadow-sm bg-warning text-dark h-100 rounded-4">
                         <div class="card-body p-3 d-flex align-items-center justify-content-between">
@@ -124,7 +118,6 @@
                     </div>
                 </div>
 
-                {{-- 4. DONASI SELESAI (Hijau - Text Gelap) --}}
                 <div class="col-6 col-md-3">
                     <div class="card border-0 shadow-sm h-100 rounded-4" style="background-color: #53d170; color: #004d1a;">
                         <div class="card-body p-3 d-flex align-items-center justify-content-between">
@@ -140,7 +133,6 @@
                 </div>
             </div>
 
-            {{-- Recent Activity --}}
             <div class="card shadow-sm border-0 rounded-4">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom-0">
                     <h5 class="mb-0 fw-bold text-dark"><i class="bi bi-clock-history me-2 text-success"></i> Aktivitas Terakhir</h5>
@@ -164,7 +156,6 @@
                                     <tr>
                                         <td class="ps-4">
                                             <div class="d-flex align-items-center">
-                                                {{-- Menggunakan Accessor photo_url --}}
                                                 <img src="{{ $item->photo_url }}" class="rounded me-3" width="40" height="40" style="object-fit: cover;">
                                                 <div>
                                                     <span class="text-dark d-block">{{ $item->name }}</span>

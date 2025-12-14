@@ -2,7 +2,6 @@
 
 @section('content')
 
-{{-- LEAFLET CSS --}}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
 
 <style>
@@ -14,7 +13,6 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             
-            {{-- Header Navigation --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h3 class="fw-bold text-dark mb-1">Edit Donasi</h3>
@@ -31,7 +29,6 @@
                 </div>
                 
                 <div class="card-body p-4">
-                    {{-- Show Validation Errors --}}
                     @if ($errors->any())
                         <div class="alert alert-danger rounded-3">
                             <ul class="mb-0 small">
@@ -44,11 +41,8 @@
 
                     <form action="{{ route('donor.food.update', $foodItem->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT') {{-- PENTING: Method PUT untuk Update --}}
-
-                        {{-- SECTION 1: PHOTO & BASIC INFO --}}
+                        @method('PUT') 
                         <div class="row g-4 mb-4">
-                            {{-- Photo Upload with Preview --}}
                             <div class="col-md-4 text-center">
                                 <label class="form-label fw-bold text-secondary small text-uppercase">Foto Makanan</label>
                                 <div class="position-relative">
@@ -56,13 +50,11 @@
                                          style="border-style: dashed !important; cursor: pointer;" 
                                          onclick="document.getElementById('photoInput').click()">
                                         
-                                        {{-- LOGIC: Jika ada foto lama, tampilkan. Jika tidak, sembunyikan img --}}
                                         <img id="imagePreview" 
                                              src="{{ $foodItem->photo ? $foodItem->photo_url : '#' }}" 
                                              alt="Preview" 
                                              class="w-100 h-100 object-fit-cover {{ $foodItem->photo ? '' : 'd-none' }}">
                                         
-                                        {{-- LOGIC: Jika ada foto lama, sembunyikan placeholder --}}
                                         <div id="uploadPlaceholder" class="text-center p-3 {{ $foodItem->photo ? 'd-none' : '' }}">
                                             <i class="bi bi-camera fs-1 text-muted opacity-50"></i>
                                             <div class="small text-muted mt-2">Klik untuk ganti foto</div>
@@ -74,7 +66,6 @@
                                 @error('photo') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            {{-- Name, Category & Quantity --}}
                             <div class="col-md-8">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Nama Makanan <span class="text-danger">*</span></label>
@@ -114,7 +105,6 @@
 
                         <hr class="border-light my-4">
 
-                        {{-- SECTION 2: LOGISTICS --}}
                         <h6 class="fw-bold text-success mb-3"><i class="bi bi-geo-alt me-2"></i>Detail Pengambilan</h6>
                         
                         <div class="row g-3 mb-3">
@@ -132,14 +122,12 @@
                             </div>
                         </div>
 
-                        {{-- MAPS INTEGRATION --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold">Lokasi Pickup <span class="text-danger">*</span></label>
                             
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-white text-muted"><i class="bi bi-geo-alt-fill text-danger"></i></span>
                                 
-                                {{-- Input Alamat (Value: Lokasi Lama) --}}
                                 <input type="text" id="pickup_location" name="pickup_location" class="form-control bg-light" 
                                        placeholder="Cari di peta atau ketik alamat..." 
                                        value="{{ old('pickup_location', $foodItem->pickup_location) }}" required>
@@ -153,7 +141,6 @@
                             <div class="form-text small text-muted"><i class="bi bi-info-circle"></i> Alamat di atas adalah lokasi tersimpan. Geser marker di peta jika ingin mengubah alamat.</div>
                         </div>
 
-                        {{-- SECTION 3: DESCRIPTION --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold">Deskripsi Tambahan <span class="opacity-50">(Opsional)</span></label>
                             <textarea name="description" class="form-control bg-light" rows="3" 
@@ -161,7 +148,6 @@
                             @error('description') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
 
-                        {{-- ACTION BUTTONS --}}
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{{ route('donor.dashboard') }}" class="btn btn-light btn-md px-4 text-secondary w-50">Batal</a>
                             <button type="submit" class="btn btn-success btn-md px-5 shadow-sm w-50">
@@ -176,11 +162,9 @@
     </div>
 </div>
 
-{{-- LEAFLET JS --}}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <script>
-    // 1. IMAGE PREVIEW (Handle existing image logic)
     function previewImage(input) {
         const preview = document.getElementById('imagePreview');
         const placeholder = document.getElementById('uploadPlaceholder');
@@ -198,12 +182,10 @@
         }
     }
 
-    // 2. LEAFLET MAP LOGIC
     let locateUser; 
 
     document.addEventListener('DOMContentLoaded', function() {
         
-        // Setup Peta (Default Monas)
         let defaultLat = -6.175392; 
         let defaultLng = 106.827153;
         
@@ -216,7 +198,6 @@
 
         var marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
 
-        // Fungsi Reverse Geocoding
         async function getAddress(lat, lng) {
             document.getElementById('pickup_location').placeholder = "Sedang mencari nama jalan...";
             try {
@@ -241,7 +222,6 @@
             getAddress(e.latlng.lat, e.latlng.lng);
         });
 
-        // Locate User Function
         locateUser = function() {
             if (navigator.geolocation) {
                 document.getElementById('pickup_location').placeholder = "Mendeteksi lokasi GPS...";
@@ -262,10 +242,6 @@
                 alert("Browser ini tidak mendukung Geolocation.");
             }
         }
-        
-        // Note: Pada halaman Edit, kita TIDAK auto-detect lokasi saat load
-        // karena kita ingin menghormati alamat yang sudah tersimpan di database.
-        // User harus klik tombol "Lokasi Saya" jika ingin update via GPS.
     });
 </script>
 @endsection

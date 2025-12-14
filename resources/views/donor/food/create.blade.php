@@ -13,7 +13,6 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             
-            {{-- Header Navigation --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h3 class="fw-bold text-dark mb-1">Buat Donasi Baru</h3>
@@ -30,7 +29,6 @@
                 </div>
                 
                 <div class="card-body p-4">
-                    {{-- Show Validation Errors --}}
                     @if ($errors->any())
                         <div class="alert alert-danger rounded-3">
                             <ul class="mb-0 small">
@@ -44,9 +42,7 @@
                     <form action="{{ route('donor.food.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        {{-- SECTION 1: PHOTO & BASIC INFO --}}
                         <div class="row g-4 mb-4">
-                            {{-- Photo Upload with Preview --}}
                             <div class="col-md-4 text-center">
                                 <label class="form-label fw-bold">Foto Makanan</label>
                                 <div class="position-relative">
@@ -66,7 +62,6 @@
                                 @error('photo') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
 
-                            {{-- Name, Category & Quantity --}}
                             <div class="col-md-8">
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Nama Makanan <span class="text-danger">*</span></label>
@@ -101,7 +96,6 @@
 
                         <hr class="border-light my-4">
 
-                        {{-- SECTION 2: LOGISTICS (Time & Location) --}}
                         <h6 class="fw-bold text-success mb-3"><i class="bi bi-geo-alt me-2"></i>Detail Pengambilan</h6>
                         
                         <div class="row g-3 mb-3">
@@ -116,37 +110,31 @@
                             </div>
                         </div>
 
-                        {{-- MAPS INTEGRATION --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold">Lokasi Pickup <span class="text-danger">*</span></label>
                             
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-white text-muted"><i class="bi bi-geo-alt-fill text-danger"></i></span>
                                 
-                                {{-- Input Alamat --}}
                                 <input type="text" id="pickup_location" name="pickup_location" class="form-control bg-light" 
                                     placeholder="Cari di peta atau ketik alamat..." 
                                     value="{{ old('pickup_location', auth()->user()->address) }}" required>
                                 
-                                {{-- TOMBOL BARU: DETEKSI LOKASI --}}
                                 <button class="btn btn-outline-secondary" type="button" onclick="locateUser()" title="Gunakan Lokasi Saya Saat Ini">
                                     <i class="bi bi-crosshair"></i> Lokasi Saya
                                 </button>
                             </div>
 
-                            {{-- Wadah Peta --}}
                             <div id="map" class="border shadow-sm"></div>
                             <div class="form-text small text-muted"><i class="bi bi-info-circle"></i> Marker otomatis mengikuti lokasi Anda. Geser marker untuk menyesuaikan.</div>
                         </div>
 
-                        {{-- SECTION 3: DESCRIPTION --}}
                         <div class="mb-4">
                             <label class="form-label fw-bold">Deskripsi Tambahan <span class="opacity-50">(Opsional)</span></label>
                             <textarea name="description" class="form-control bg-light" rows="3" placeholder="Jelaskan kondisi makanan, halal/non-halal, atau instruksi khusus..."></textarea>
                             @error('description') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
 
-                        {{-- ACTION BUTTONS --}}
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{{ route('donor.dashboard') }}" class="btn btn-light btn-md px-4 text-secondary w-50">Batal</a>
                             <button type="submit" class="btn btn-success btn-md px-5 shadow-sm w-50">
@@ -163,7 +151,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-{{-- Simple Image Preview Script --}}
 <script>
     function previewImage(input) {
         const preview = document.getElementById('imagePreview');
@@ -182,14 +169,11 @@
         }
     }
 
-    // 2. LEAFLET MAP LOGIC
-    // Variable global untuk akses fungsi dari luar DOMContentLoaded
     let locateUser; 
 
     document.addEventListener('DOMContentLoaded', function() {
         
-        // 1. Setup Peta
-        let defaultLat = -6.175392; // Default Monas
+        let defaultLat = -6.175392; 
         let defaultLng = 106.827153;
         
         var map = L.map('map').setView([defaultLat, defaultLng], 13);
@@ -201,7 +185,6 @@
 
         var marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
 
-        // 2. Fungsi Get Address (Reverse Geocoding)
         async function getAddress(lat, lng) {
             document.getElementById('pickup_location').placeholder = "Sedang mencari nama jalan...";
             try {
@@ -216,7 +199,6 @@
             }
         }
 
-        // 3. Event Listener Marker
         marker.on('dragend', function(e) {
             var position = marker.getLatLng();
             getAddress(position.lat, position.lng);
@@ -227,10 +209,8 @@
             getAddress(e.latlng.lat, e.latlng.lng);
         });
 
-        // 4. LOGIC AUTO DETECT LOCATION (INTI PERMINTAAN ANDA)
         locateUser = function() {
             if (navigator.geolocation) {
-                // Beri feedback visual
                 document.getElementById('pickup_location').placeholder = "Mendeteksi lokasi GPS...";
                 
                 navigator.geolocation.getCurrentPosition(
@@ -238,34 +218,25 @@
                         var userLat = position.coords.latitude;
                         var userLng = position.coords.longitude;
 
-                        // Pindahkan Peta & Marker ke Lokasi User
                         map.setView([userLat, userLng], 16);
                         marker.setLatLng([userLat, userLng]);
 
-                        // Selalu update alamat berdasarkan GPS (opsional: bisa dicek if kosong dulu)
                         getAddress(userLat, userLng);
                     },
                     function(error) {
                         console.warn("Akses lokasi ditolak atau error:", error.message);
-                        // Jangan alert error agar tidak mengganggu jika user sengaja menolak
                     },
-                    { enableHighAccuracy: true } // Minta akurasi tinggi (GPS)
+                    { enableHighAccuracy: true } 
                 );
             } else {
                 alert("Browser ini tidak mendukung Geolocation.");
             }
         }
 
-        // 5. JALANKAN SAAT LOAD
-        // Cek: Jika input alamat masih kosong, atau user ingin auto-detect default
-        // Kita jalankan otomatis.
         let currentAddress = document.getElementById('pickup_location').value;
         if (!currentAddress || currentAddress.trim() === "") {
-            locateUser(); // Auto-run jika belum ada alamat
+            locateUser();
         } else {
-            // Jika sudah ada alamat (misal dari profil), kita biarkan user klik tombol manual saja
-            // agar tidak menimpa alamat yang sudah tersimpan.
-            // Namun, jika Anda ingin *selalu* auto-detect, hapus kondisi 'if' ini dan panggil locateUser() langsung.
         }
     });
 </script>

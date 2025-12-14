@@ -27,19 +27,12 @@ Route::get('/', function () {
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/how-it-works', [HomeController::class, 'how'])->name('how');
 
-// Custom Register Routes
 Route::get('/register', [RegisterController::class, 'show'])
     ->middleware('guest')
     ->name('register');
 
 Route::post('/register', [RegisterController::class, 'register'])
     ->middleware('guest');
-
-/*
-|--------------------------------------------------------------------------
-| Authenticated Routes
-|--------------------------------------------------------------------------
-*/
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
