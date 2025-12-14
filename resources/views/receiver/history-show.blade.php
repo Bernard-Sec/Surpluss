@@ -162,14 +162,41 @@
                         {{-- TOMBOL BATAL --}}
                         @if(in_array($claim->status, ['pending', 'approved']))
                             <div class="mt-4 pt-3 border-top border-secondary border-opacity-10 text-end">
-                                <form action="{{ route('receiver.claim.cancel', $claim->id) }}" method="POST" 
-                                      onsubmit="return confirm('Yakin batalkan permintaan ini? Makanan akan kembali tersedia untuk orang lain.')">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        <i class="bi bi-x-circle me-1"></i> Batalkan Permintaan
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                    <i class="bi bi-x-circle me-1"></i> Batalkan Permintaan
+                                </button>
+                            </div>
+                            <div class="modal fade" id="cancelModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 shadow-lg rounded-4">
+                                        <div class="modal-header border-0 pb-0">
+                                            <h5 class="modal-title fw-bold text-danger">Batalkan Permintaan?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center py-4">
+                                            <div class="mb-3 text-danger opacity-75">
+                                                <i class="bi bi-exclamation-circle display-1"></i>
+                                            </div>
+                                            <p class="text-dark fw-bold mb-1">
+                                                Yakin ingin membatalkan permintaan ini?
+                                            </p>
+                                            <small class="text-muted d-block">
+                                                Makanan akan kembali tersedia untuk orang lain yang membutuhkan.
+                                            </small>
+                                        </div>
+                                        <div class="modal-footer border-0 justify-content-center pb-4 pt-0">
+                                            <button type="button" class="btn btn-light px-4 rounded-pill fw-bold" data-bs-dismiss="modal">Kembali</button>
+                                            
+                                            <form action="{{ route('receiver.claim.cancel', $claim->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-danger px-4 rounded-pill fw-bold">
+                                                    Ya, Batalkan
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         @endif
                     </div>

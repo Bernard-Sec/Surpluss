@@ -204,12 +204,29 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                         @endif
-                                        <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus item ini?');">
-                                            @csrf @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal-{{ $item->id }}" title="Hapus">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                        <div class="modal fade" id="deleteItemModal-{{ $item->id }}" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Hapus Makanan</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Apakah Anda yakin ingin menghapus <strong>{{ $item->name }}</strong>? Data yang dihapus tidak dapat dikembalikan.
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline">
+                                                            @csrf @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -394,12 +411,11 @@
                                                 <i class="bi bi-qr-code-scan"></i> Konfirmasi
                                             </button>
 
-                                            <form action="{{ route('donor.claims.cancel', $claim->id) }}" method="POST" onsubmit="return confirm('...');">
-                                                @csrf @method('PATCH')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger">
-                                                    <i class="bi bi-x-circle"></i> Batalkan
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#cancelClaimModal-{{ $claim->id }}">
+                                                <i class="bi bi-x-circle"></i> Batalkan
+                                            </button>
                                         </div>
 
                                         <div class="modal fade" id="verifyModal-{{ $claim->id }}" tabindex="-1">
@@ -430,6 +446,26 @@
                                                             <button type="submit" class="btn btn-success w-100">
                                                                 Konfirmasi
                                                             </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal fade" id="cancelClaimModal-{{ $claim->id }}" tabindex="-1">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Batalkan Proses</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Apakah Anda yakin ingin membatalkan proses donasi untuk <strong>{{ $claim->receiver->name }}</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                                        <form action="{{ route('donor.claims.cancel', $claim->id) }}" method="POST">
+                                                            @csrf @method('PATCH')
+                                                            <button type="submit" class="btn btn-danger">Ya, Batalkan</button>
                                                         </form>
                                                     </div>
                                                 </div>
