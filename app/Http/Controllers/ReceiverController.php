@@ -73,7 +73,7 @@ class ReceiverController extends Controller
                             ->count(); 
 
         $approvedClaims = Claim::where('receiver_id', $userId)
-                            ->whereIn('status', ['approved', 'claimed', 'completed']) // Added 'completed'
+                            ->whereIn('status', ['approved', 'claimed', 'completed']) 
                             ->count();
 
         $claimsHistory = Claim::with(['fooditems.users']) 
@@ -171,7 +171,7 @@ class ReceiverController extends Controller
         if ($sort == 'food_name') {
             $query->join('food_items', 'claims.food_id', '=', 'food_items.id')
                 ->orderBy('food_items.name', $direction)
-                ->select('claims.*');
+                ->select('claims.*'); 
         } 
         elseif ($sort == 'status') {
             $query->orderBy('status', $direction);

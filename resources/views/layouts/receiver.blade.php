@@ -11,108 +11,106 @@
             height: 200px;
             object-fit: cover;
         }
-        .navbar-custom {
-            background-color: #198754; 
-            background: linear-gradient(135deg, #198754 0%, #157347 100%);
-            box-shadow: 0 4px 20px rgba(25, 135, 84, 0.15);
-        }
-        .nav-link {
-            position: relative;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.85) !important;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: #ffffff !important;
-            transform: translateY(-1px);
-        }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 0;
-            left: 50%;
-            background-color: #ffffff;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 80%;
-        }
-        .navbar-brand {
-            letter-spacing: 0.5px;
-        }
     </style>
 </head>
-<body class="bg-light">
-     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3 sticky-top">
+<body>
+     <nav class="navbar navbar-expand-lg navbar-dark bg-success py-3 shadow-sm">
         <div class="container">
             
             {{-- LOGO --}}
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2 fs-4" href="{{ route('home') }}">
-                <i class="bi bi-flower1"></i> Surplus
+            <a class="navbar-brand fw-bold" href="{{ route('home') }}">
+                Surplus
             </a>
 
             {{-- Mobile Toggle --}}
-            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <ul class="navbar-nav ms-auto">
 
+                    <!-- {{-- =============================
+                        UNIVERSAL LINKS (GUEST + AUTH)
+                    ============================== --}}
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('home') ? 'fw-bold text-white' : '' }}"
+                        href="{{ route('home') }}">
+                        Home
+                        </a>
+                    </li> -->
+
+                    
+                    
                     {{-- =============================
                         GUEST USER
                         ============================== --}}
                         @guest
 
                         <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('home') ? 'fw-bold text-white' : '' }}"
                         href="{{ route('home') }}">
-                        Home
+                        Beranda
                         </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('how') ? 'active' : '' }}"
+                        <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
                         href="{{ route('how') }}">
-                        How It Works
+                        Cara Kerja
                         </a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}"
+                            <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
                             href="{{ route('about') }}">
-                            About Us
+                            Tentang Kami
                             </a>
                         </li>
         
 
 
-                        <li class="nav-item ms-lg-2">
-                            <a class="btn btn-light text-success fw-bold px-4 rounded-pill shadow-sm"
+                        <li class="nav-item ms-3">
+                            <a class="btn btn-light text-success fw-bold px-3"
                             href="{{ route('login') }}">
-                            Login
+                            Masuk
                         </a>
                     </li>
                     @endguest
                     
-                    @auth
                     
+                    {{-- =============================
+                        AUTHENTICATED USER
+                        ============================== --}}
+                        @auth
+                        
                         {{-- Role-based Dashboard --}}
-                        @if(auth()->user()->role === 'receiver')
+                        @if(auth()->user()->role === 'donor')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('receiver.dashboard') }}">
-                                Dashboard
+                            <a class="nav-link" href="{{ route('donor.dashboard') }}">
+                                Dasbor
                             </a>
                         </li>
-                        @elseif(auth()->user()->role === 'donor')
+                        @elseif(auth()->user()->role === 'receiver')
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('donor.dashboard') ? 'active' : '' }}" href="{{ route('donor.dashboard') }}">
-                                Home
+                            <a class="nav-link" href="{{ route('receiver.dashboard') }}">
+                                Dasbor
                             </a>
                         </li>
                         @endif
+                        {{-- <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
+                            href="{{ route('how') }}">
+                            Cara Kerja
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
+                            href="{{ route('about') }}">
+                            Tentang Kami
+                            </a>
+                        </li> --}}
+                        <!-- 55555 -->
+                        {{-- Extra Donor-only Links --}}
                         @if(auth()->user()->role === 'receiver')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('receiver.profile') ? 'active' : '' }}" 
@@ -123,23 +121,20 @@
                                 href="{{ route('receiver.history') }}">Riwayat</a>
                             </li>
                         @endif
+                        <!-- 55555 -->
                         {{-- Logout --}}
-                        <li class="nav-item ms-lg-3">
+                        <li class="nav-item ms-3">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button class="btn btn-danger px-4 rounded-pill shadow-sm bg-gradient border-0 d-flex align-items-center gap-2">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
-                                </button>
+                                <button class="btn btn-danger px-3">Keluar</button>
                             </form>
                         </li>
 
                     @endauth
 
                     {{-- LANGUAGE SWITCH --}}
-                    <li class="nav-item ms-lg-3">
-                        <div class="bg-white bg-opacity-25 rounded-pill px-2 py-1">
-                             <x-language-switch />
-                        </div>
+                    <li class="nav-item ms-4 mt-1">
+                        <x-language-switch />
                     </li>
 
                 </ul>
@@ -148,10 +143,10 @@
     </nav>
 
 
-    <div class="container mt-5 pt-2 pb-5">
+    <div class="container mt-5 pt-2">
         @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 rounded-3" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif

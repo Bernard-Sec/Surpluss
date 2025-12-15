@@ -1,7 +1,6 @@
 <x-guest-layout>
 
     <style>
-        /* --- STYLE DASAR (Tetap) --- */
         .step-card {
             transition: all 0.3s ease;
             border: 1px solid rgba(0,0,0,0.05);
@@ -31,7 +30,6 @@
             padding: 8px 12px; margin-top: 15px; text-align: left; border-radius: 0 8px 8px 0;
         }
 
-        /* --- STYLE BARU: VALUE CARDS --- */
         .value-card {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
@@ -49,7 +47,7 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.08);
             border-color: #198754;
         }
-        /* Dekorasi lingkaran di background card */
+
         .value-deco {
             position: absolute; top: -20px; right: -20px;
             width: 100px; height: 100px;
@@ -98,10 +96,10 @@
 
                         <h4 class="fw-bold mb-3">Donor Upload</h4>
                         <p class="text-muted mb-3">
-                            Mitra (Toko/Resto) mengunggah makanan berlebih yang masih layak.
+                            Mitra seperti toko, restoran, atau katering mengunggah makanan berlebih yang masih layak konsumsi ke platform Surplus.
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> ............
+                            <strong>💡 Tips:</strong> Pastikan makanan masih segar dan belum kedaluwarsa.
                         </div>
                     </div>
                 </div>
@@ -123,10 +121,10 @@
 
                         <h4 class="fw-bold mb-3">Receiver Menerima</h4>
                         <p class="text-muted mb-3">
-                            Pengguna memilih makanan di sekitar mereka dan melakukan pemesanan.
+                            Pengguna melihat daftar makanan tersedia di sekitar mereka, lalu memilih dan melakukan pemesanan sesuai kebutuhan.
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> ................
+                            <strong>💡 Tips:</strong> Perhatikan lokasi dan batas waktu pengambilan.
                         </div>
                     </div>
                 </div>
@@ -148,10 +146,10 @@
 
                         <h4 class="fw-bold mb-3">Ambil Makanan</h4>
                         <p class="text-muted mb-3">
-                            Datang ke lokasi yang telah disepakati.
+                            Datang ke lokasi mitra sesuai waktu yang telah disepakati untuk mengambil makanan yang telah dipesan.
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> .............
+                            <strong>💡 Tips:</strong> Tunjukkan bukti pemesanan kepada mitra.
                         </div>
                     </div>
                 </div>
@@ -171,8 +169,8 @@
                     <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-inline-flex p-3 mb-3">
                         <i class="bi bi-wallet2 fs-3"></i>
                     </div>
-                    <h5 class="fw-bold">Makan Hemat 50%</h5>
-                    <p class="text-secondary mb-0">Nikmati makanan restoran dan bakery berkualitas premium dengan harga miring setiap harinya.</p>
+                    <h5 class="fw-bold">Tanpa Biaya</h5>
+                    <p class="text-secondary mb-0">Surplus dapat digunakan sepenuhnya gratis oleh mitra dan penerima tanpa biaya layanan, komisi, atau potongan apa pun.</p>
                 </div>
             </div>
 
@@ -193,8 +191,8 @@
                     <div class="bg-warning bg-opacity-10 text-warning rounded-3 d-inline-flex p-3 mb-3">
                         <i class="bi bi-shop fs-3"></i>
                     </div>
-                    <h5 class="fw-bold">Dukung Bisnis Lokal</h5>
-                    <p class="text-secondary mb-0">Membantu UMKM dan pemilik restoran mengurangi kerugian akibat stok makanan berlebih.</p>
+                    <h5 class="fw-bold">Proses Transparan</h5>
+                    <p class="text-secondary mb-0">Setiap tahap distribusi dapat dipantau secara jelas oleh mitra dan penerima.</p>
                 </div>
             </div>
         </div>

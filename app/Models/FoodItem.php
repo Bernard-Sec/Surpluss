@@ -41,7 +41,7 @@ class FoodItem extends Model
     public function getPhotoUrlAttribute()
     {
         if (!$this->photo) {
-            return 'https://placehold.co/800x400?text=No+Image';
+            return 'https://placehold.co/800x400?text=No+Image'; 
         }
 
         if (Str::startsWith($this->photo, 'images/sample-')) {
