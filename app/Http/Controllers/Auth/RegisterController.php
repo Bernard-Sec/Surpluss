@@ -16,22 +16,16 @@ class RegisterController extends Controller
     {
         $this->creator = $creator;
     }
-
-    // Show register page
     public function show()
     {
         return view('auth.register');
     }
 
-    // Handle register request
     public function register(Request $request)
     {
-        // Create user using Jetstream/Fortify logic
         $user = $this->creator->create($request->all());
 
         event(new Registered($user));
-
-        // JETSTREAM DEFAULT: auto login → kita matikan
         Auth::logout();
 
         return redirect()

@@ -9,4 +9,5 @@ return [
     'forgot_password' => 'Lupa kata sandi?',
     'no_account' => 'Belum punya akun?',
     'register_link' => 'Daftar di sini',
+    'back' => 'Kembali'
 ];

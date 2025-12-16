@@ -3,7 +3,7 @@
 @section('content')
 <div class="card shadow-sm">
     <div class="card-header bg-warning text-dark">
-        <h5 class="mb-0">Permintaan Masuk (Pending)</h5>
+        <h5 class="mb-0">{{ __('donor.stat_req') }} (Pending)</h5>
     </div>
     <div class="card-body">
         @if(session('success'))
@@ -14,11 +14,11 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Penerima</th>
-                        <th>Makanan Diminta</th>
-                        <th>Pesan</th>
-                        <th>Tanggal Request</th>
-                        <th>Aksi</th>
+                        <th>{{ __('donor.th_receiver') }}</th>
+                        <th>{{ __('donor.th_req_food') }}</th>
+                        <th>{{ __('donor.th_msg') }}</th>
+                        <th>{{ __('donor.th_time') }}</th>
+                        <th>{{ __('donor.th_action') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,10 +41,10 @@
                         <td>
                             <form action="{{ route('donor.requests.approve', $claim->id) }}" method="POST" class="d-inline">
                                 @csrf @method('PATCH')
-                                <button class="btn btn-sm btn-success">✓ Terima</button>
+                                <button class="btn btn-sm btn-success">✓ {{ __('donor.btn_accept') }}</button>
                             </form>
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $claim->id }}">
-                                ✗ Tolak
+                                ✗ {{ __('donor.btn_reject') }}
                             </button>
                             <div class="modal fade" id="rejectModal-{{ $claim->id }}" tabindex="-1" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -54,31 +54,30 @@
                                             @method('PATCH')
                                             
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Tolak Permintaan</h5>
+                                                <h5 class="modal-title">{{ __('donor.modal_rej_title') }}</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             
                                             <div class="modal-body">
-                                                <p>Anda akan menolak permintaan dari <strong>{{ $claim->receiver->name ?? 'User' }}</strong>.</p>
+                                                <p>{!! __('donor.modal_rej_body', ['name' => $claim->receiver->name ?? 'User']) !!}</p>
                                                 
                                                 <div class="mb-3">
-                                                    <label for="reason-select-{{ $claim->id }}" class="form-label">Pilih Alasan Penolakan:</label>
+                                                    <label for="reason-select-{{ $claim->id }}" class="form-label">{{ __('donor.label_reason') }}</label>
                                                     
                                                     <select name="rejection_reason" id="reason-select-{{ $claim->id }}" class="form-select" required>
-                                                        <option value="">-- Pilih Alasan --</option>
-                                                        <option value="Maaf, lokasi Anda terlalu jauh untuk penjemputan.">Jarak Terlalu Jauh</option>
-                                                        <option value="Maaf, makanan ini sudah didahulukan untuk orang yang lebih membutuhkan.">Sudah Ada Prioritas Lain</option>
-                                                        <option value="Mohon maaf, kondisi makanan ternyata sudah tidak layak dikonsumsi.">Makanan Rusak/Basi</option>
-                                                        <option value="Maaf, waktu penjemputan tidak sesuai dengan ketersediaan saya.">Waktu Tidak Cocok</option>
-                                                        <option value="Maaf, stok makanan sudah habis.">Stok Habis</option>
-                                                        <option value="Maaf, permintaan Anda kami tolak.">Lainnya</option>
+                                                        <option value="">{{ __('donor.reason_default') }}</option>
+                                                        <option value="{{ __('donor.reason_1') }}">{{ __('donor.reason_1') }}</option>
+                                                        <option value="{{ __('donor.reason_2') }}">{{ __('donor.reason_2') }}</option>
+                                                        <option value="{{ __('donor.reason_3') }}">{{ __('donor.reason_3') }}</option>
+                                                        <option value="{{ __('donor.reason_4') }}">{{ __('donor.reason_4') }}</option>
+                                                        <option value="{{ __('donor.reason_5') }}">{{ __('donor.reason_5') }}</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <button type="submit" class="btn btn-danger">Kirim Penolakan</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('donor.btn_cancel') }}</button>
+                                                <button type="submit" class="btn btn-danger">{{ __('donor.btn_submit_reject') }}</button>
                                             </div>
                                         </form>
                                     </div>
@@ -88,7 +87,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="5" class="text-center text-muted py-4">Belum ada permintaan baru.</td>
+                        <td colspan="5" class="text-center text-muted py-4">{{ __('donor.empty_req') }}</td>
                     </tr>
                     @endforelse
                 </tbody>

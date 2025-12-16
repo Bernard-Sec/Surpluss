@@ -8,7 +8,6 @@ class DashboardController extends Controller
     {
         $user = auth()->user();
 
-        // Check role and redirect to the specific dashboard route defined in web.php
         if ($user->role === 'donor') {
             return redirect()->route('donor.dashboard');
         } elseif ($user->role === 'receiver') {

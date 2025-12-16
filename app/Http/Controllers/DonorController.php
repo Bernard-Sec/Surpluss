@@ -46,7 +46,7 @@ class DonorController extends Controller
         ->with(['fooditems', 'receiver']) 
         ->latest()
         ->get();
-        
+
         $activeItems = FoodItem::where('user_id', $userId)
                         ->where('status', 'available')
                         ->latest()
@@ -55,7 +55,7 @@ class DonorController extends Controller
         $ongoingQuery = Claim::whereHas('fooditems', function($q) use ($userId) {
             $q->where('user_id', $userId);
         })
-        ->where('status', 'approved') 
+        ->where('status', 'approved')
         ->with(['fooditems', 'receiver']);
         $ongoingItems = $ongoingQuery->get();
 
@@ -67,7 +67,7 @@ class DonorController extends Controller
         $historyClaimsQuery = Claim::whereHas('fooditems', function($q) use ($userId) {
             $q->where('user_id', $userId);
         })
-        ->whereIn('status', ['completed', 'rejected', 'cancelled']) 
+        ->whereIn('status', ['completed', 'rejected', 'cancelled'])
         ->with(['fooditems', 'receiver'])
         ->orderBy('updated_at', 'desc');
         $historyClaims = $historyClaimsQuery->get();
@@ -106,7 +106,7 @@ class DonorController extends Controller
         }
 
         FoodItem::create([
-            'user_id' => Auth::id(), 
+            'user_id' => Auth::id(),
             'category_id' => $validated['category_id'],
             'name' => $validated['name'],
             'description' => $validated['description'],
@@ -185,11 +185,11 @@ class DonorController extends Controller
 
     public function cancel(Request $request, FoodItem $foodItem)
     {
-        if ($foodItem->user_id !== Auth::id()) abort(403); 
+        if ($foodItem->user_id !== Auth::id()) abort(403);
 
         if ($foodItem->status === 'claimed') {
             $foodItem->update(['status' => 'cancelled']);
-            
+
             Claim::where('food_id', $foodItem->id)->update(['status' => 'rejected']);
 
             return back()->with('success', 'Donasi berhasil dibatalkan.');
@@ -206,7 +206,7 @@ class DonorController extends Controller
         $foodItem = $claim->fooditems;
 
         $foodItem->quantity += $claim->quantity;
-        
+
         if ($foodItem->status == 'claimed') {
             $foodItem->status = 'available';
         }
@@ -220,7 +220,7 @@ class DonorController extends Controller
     public function requests()
     {
         $claims = Claim::whereHas('fooditems', function($query) {
-            $query->where('user_id', Auth::id()); 
+            $query->where('user_id', Auth::id());
         })->where('status', 'pending') 
         ->with(['fooditems', 'receiver']) 
         ->latest()
@@ -231,6 +231,7 @@ class DonorController extends Controller
 
     public function approve(Claim $claim)
     {
+
         if ($claim->fooditems->user_id !== Auth::id()) abort(403);
 
         $foodItem = $claim->fooditems;
@@ -289,6 +290,7 @@ class DonorController extends Controller
                                 ->count();
 
         if ($foodItem->quantity == 0 && $activeClaimsCount == 0) {
+
             $foodItem->update(['status' => 'completed']);
         }
 
@@ -297,6 +299,7 @@ class DonorController extends Controller
 
     public function reject(Request $request, Claim $claim)
     {
+
         if ($claim->fooditems->user_id !== Auth::id()) abort(403); 
 
         $request->validate([
@@ -349,7 +352,7 @@ class DonorController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user(); 
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
