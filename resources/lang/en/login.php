@@ -9,4 +9,5 @@ return [
     'forgot_password' => 'Forgot your password?',
     'no_account' => 'No Account?',
     'register_link' => 'Register Here',
+    'back' => 'Back'
 ];

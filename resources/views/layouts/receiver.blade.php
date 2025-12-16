@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Receiver - Surplus</title>
+    <title>{{ __('receiver.dashboard') }} - Surplus</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -29,104 +29,76 @@
 
             <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto">
-
-                    <!-- {{-- =============================
-                        UNIVERSAL LINKS (GUEST + AUTH)
-                    ============================== --}}
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('home') ? 'fw-bold text-white' : '' }}"
-                        href="{{ route('home') }}">
-                        Home
-                        </a>
-                    </li> -->
-
-                    
                     
                     {{-- =============================
                         GUEST USER
                         ============================== --}}
-                        @guest
-
-                        <li class="nav-item">
+                    @guest
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('home') ? 'fw-bold text-white' : '' }}"
                         href="{{ route('home') }}">
-                        Beranda
+                        {{ __('nav.home') }}
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
                         href="{{ route('how') }}">
-                        Cara Kerja
+                        {{ __('nav.how') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
-                            href="{{ route('about') }}">
-                            Tentang Kami
-                            </a>
-                        </li>
-        
+                        <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
+                        href="{{ route('about') }}">
+                        {{ __('nav.about') }}
+                        </a>
+                    </li>
 
-
-                        <li class="nav-item ms-3">
-                            <a class="btn btn-light text-success fw-bold px-3"
-                            href="{{ route('login') }}">
-                            Masuk
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-light text-success fw-bold px-3"
+                        href="{{ route('login') }}">
+                        {{ __('nav.login') }}
                         </a>
                     </li>
                     @endguest
                     
-                    
                     {{-- =============================
                         AUTHENTICATED USER
                         ============================== --}}
-                        @auth
+                    @auth
                         
                         {{-- Role-based Dashboard --}}
                         @if(auth()->user()->role === 'donor')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('donor.dashboard') }}">
-                                Dasbor
+                                {{ __('nav.dashboard') }}
                             </a>
                         </li>
                         @elseif(auth()->user()->role === 'receiver')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('receiver.dashboard') }}">
-                                Dasbor
+                                {{ __('nav.dashboard') }}
                             </a>
                         </li>
                         @endif
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
-                            href="{{ route('how') }}">
-                            Cara Kerja
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
-                            href="{{ route('about') }}">
-                            Tentang Kami
-                            </a>
-                        </li> --}}
-                        <!-- 55555 -->
-                        {{-- Extra Donor-only Links --}}
+
+                        {{-- Receiver-only Links --}}
                         @if(auth()->user()->role === 'receiver')
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('receiver.profile') ? 'active' : '' }}" 
-                                href="{{ route('receiver.profile') }}">Profil</a>
+                                href="{{ route('receiver.profile') }}">{{ __('receiver.nav_profile') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {{ request()->routeIs('receiver.history') ? 'active' : '' }}" 
-                                href="{{ route('receiver.history') }}">Riwayat</a>
+                                href="{{ route('receiver.history') }}">{{ __('receiver.nav_history') }}</a>
                             </li>
                         @endif
-                        <!-- 55555 -->
+                        
                         {{-- Logout --}}
                         <li class="nav-item ms-3">
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button class="btn btn-danger px-3">Keluar</button>
+                                <button class="btn btn-danger px-3">{{ __('nav.logout') }}</button>
                             </form>
                         </li>
 

@@ -39,12 +39,12 @@
 
 <div class="row mb-4">
     <div class="col-md-8">
-        <h2 class="fw-bold text-success">Halo, {{ $user->name }}! 👋</h2>
-        <p class="text-muted">Yuk bantu kurangi food waste hari ini!</p>
+        <h2 class="fw-bold text-success">{{ __('donor.greeting', ['name' => $user->name]) }}</h2>
+        <p class="text-muted">{{ __('donor.sub_greeting') }}</p>
     </div>
     <div class="col-md-4 text-end">
         <a href="{{ route('donor.food.create') }}" class="btn btn-success btn-md shadow-sm">
-            + Donasi Makanan
+            {{ __('donor.btn_create') }}
         </a>
     </div>
 </div>
@@ -54,9 +54,9 @@
         <div class="card border-0 shadow-sm bg-primary text-dark h-100">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="mb-0 text-dark-50">Donasi Aktif</h5>
+                    <h5 class="mb-0 text-dark-50">{{ __('donor.stat_active') }}</h5>
                     <h2 class="fw-bold mb-0">{{ $totalActive }}</h2>
-                    <small class="text-dark-50">Siap diambil</small>
+                    <small class="text-dark-50">{{ __('donor.stat_active_desc') }}</small>
                 </div>
                 <div class="fs-1 opacity-25">
                     <i class="bi bi-box-seam"></i>
@@ -69,9 +69,9 @@
         <div class="card border-0 shadow-sm text-dark h-100" style="background-color: #f75151;">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="mb-0 text-dark-50">Permintaan Masuk</h5>
-                    <h2 class="fw-bold mb-0">{{ $totalRequests ?? $totalClaims }}</h2> {{-- Sesuaikan variable controller --}}
-                    <small class="text-dark-50">Butuh respons</small>
+                    <h5 class="mb-0 text-dark-50">{{ __('donor.stat_req') }}</h5>
+                    <h2 class="fw-bold mb-0">{{ $totalRequests ?? $totalClaims }}</h2>
+                    <small class="text-dark-50">{{ __('donor.stat_req_desc') }}</small>
                 </div>
                 <div class="fs-1 opacity-25">
                     <i class="bi bi-inbox-fill"></i>
@@ -84,9 +84,9 @@
         <div class="card border-0 shadow-sm bg-warning text-dark h-100">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="mb-0 text-dark-50">Klaim Selesai</h5>
+                    <h5 class="mb-0 text-dark-50">{{ __('donor.stat_claim') }}</h5>
                     <h2 class="fw-bold mb-0">{{ $totalClaimsCompleted }}</h2>
-                    <small class="text-dark-50">Telah disalurkan</small>
+                    <small class="text-dark-50">{{ __('donor.stat_claim_desc') }}</small>
                 </div>
                 <div class="fs-1 opacity-25">
                     <i class="bi bi-receipt-cutoff"></i>
@@ -99,9 +99,9 @@
         <div class="card border-0 shadow-sm text-dark h-100" style="background-color: #53d170;">
             <div class="card-body p-4 d-flex align-items-center justify-content-between">
                 <div>
-                    <h5 class="mb-0 text-dark-50">Donasi Selesai</h5>
+                    <h5 class="mb-0 text-dark-50">{{ __('donor.stat_complete') }}</h5>
                     <h2 class="fw-bold mb-0">{{ $totalCompleted }}</h2>
-                    <small class="text-dark-50">Telah disalurkan</small>
+                    <small class="text-dark-50">{{ __('donor.stat_complete_desc') }}</small>
                 </div>
                 <div class="fs-1 opacity-25">
                     <i class="bi bi-check-circle"></i>
@@ -116,22 +116,22 @@
         <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active text-secondary fw-bold" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">
-                    🟢 Sedang Aktif ({{ $activeItems->count() }})
+                    🟢 {{ __('donor.tab_active') }} ({{ $activeItems->count() }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary fw-bold" id="requests-tab" data-bs-toggle="tab" data-bs-target="#requests" type="button" role="tab">
-                    🔔 Permintaan ({{ $pendingClaims->count() }})
+                    🔔 {{ __('donor.tab_req') }} ({{ $pendingClaims->count() }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary fw-bold" id="process-tab" data-bs-toggle="tab" data-bs-target="#process" type="button" role="tab">
-                    🚚 Dalam Proses ({{ $ongoingItems->count() }})
+                    🚚 {{ __('donor.tab_process') }} ({{ $ongoingItems->count() }})
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link text-secondary fw-bold" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab">
-                    📜 Riwayat Selesai
+                    📜 {{ __('donor.tab_history') }}
                 </button>
             </li>
         </ul>
@@ -142,17 +142,17 @@
             
             <div class="tab-pane fade show active" id="active" role="tabpanel">
                 @if($activeItems->isEmpty())
-                    <p class="text-center text-muted py-4">Belum ada donasi aktif. Yuk donasi sekarang!</p>
+                    <p class="text-center text-muted py-4">{{ __('donor.empty_active') }}</p>
                 @else
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Nama Makanan</th>
-                                    <th class="text-center">Jumlah Tersedia</th>
-                                    <th>Waktu Pengambilan</th>
-                                    <th>Tanggal Kedaluwarsa</th>
-                                    <th>Aksi</th>
+                                    <th>{{ __('donor.th_food') }}</th>
+                                    <th class="text-center">{{ __('donor.th_qty') }}</th>
+                                    <th>{{ __('donor.th_time') }}</th>
+                                    <th>{{ __('donor.th_exp') }}</th>
+                                    <th>{{ __('donor.th_action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -168,7 +168,7 @@
                                             <div>
                                                 <span class="d-block">{{ $item->name }}</span>
                                                 <span class="badge bg-light text-secondary border mt-1">
-                                                    {{ $item->category->name ?? 'Umum' }}
+                                                    {{ $item->category ? __('categories.' . \Illuminate\Support\Str::slug($item->category->name)) : __('categories.general') }}
                                                 </span>
                                             </div>
                                         </div>
@@ -189,11 +189,11 @@
                                         @php $isExpired = \Carbon\Carbon::parse($item->expires_at)->isPast(); @endphp
                                         @if($isExpired)
                                             <span class="text-danger fw-bold">{{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}</span>
-                                            <div class="small text-danger"><i class="bi bi-exclamation-circle"></i> Expired</div>
+                                            <div class="small text-danger"><i class="bi bi-exclamation-circle"></i> {{ __('donor.status_expired_badge') }}</div>
                                         @else
                                             <span class="text-dark">{{ \Carbon\Carbon::parse($item->expires_at)->format('d M Y') }}</span>
                                             <div class="small text-muted">
-                                                {{ \Carbon\Carbon::parse($item->expires_at)->locale('id')->diffForHumans() }}
+                                                {{ \Carbon\Carbon::parse($item->expires_at)->locale(app()->getLocale())->diffForHumans() }}
                                             </div>
                                         @endif
                                     </td>
@@ -204,24 +204,24 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
                                         @endif
-                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal-{{ $item->id }}" title="Hapus">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal-{{ $item->id }}" title="{{ __('donor.modal_del_title') }}">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                         <div class="modal fade" id="deleteItemModal-{{ $item->id }}" tabindex="-1">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Hapus Makanan</h5>
+                                                        <h5 class="modal-title fw-bold">{{ __('donor.modal_del_title') }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        Apakah Anda yakin ingin menghapus <strong>{{ $item->name }}</strong>? Data yang dihapus tidak dapat dikembalikan.
+                                                        {!! __('donor.modal_del_body', ['name' => $item->name]) !!}
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('donor.btn_cancel') }}</button>
                                                         <form action="{{ route('donor.food.destroy', $item->id) }}" method="POST" class="d-inline">
                                                             @csrf @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+                                                            <button type="submit" class="btn btn-danger">{{ __('donor.btn_delete') }}</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -240,18 +240,18 @@
                 @if($pendingClaims->isEmpty())
                     <div class="text-center py-5 text-muted">
                         <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                        Belum ada permintaan masuk saat ini.
+                        {{ __('donor.empty_req') }}
                     </div>
                 @else
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Penerima</th>
-                                    <th>Makanan Diminta</th>
-                                    <th class="text-center">Jumlah Diminta</th>
-                                    <th>Pesan</th>
-                                    <th>Aksi</th>
+                                    <th>{{ __('donor.th_receiver') }}</th>
+                                    <th>{{ __('donor.th_req_food') }}</th>
+                                    <th class="text-center">{{ __('donor.th_req_qty') }}</th>
+                                    <th>{{ __('donor.th_msg') }}</th>
+                                    <th>{{ __('donor.th_action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -265,7 +265,7 @@
                                             <div>
                                                 <span class="d-block text-dark">{{ $claim->receiver->name ?? 'User' }}</span>
                                                 <small class="text-muted">
-                                                    <i class="bi bi-clock-history"></i> {{ $claim->created_at->locale('id')->diffForHumans() }}
+                                                    <i class="bi bi-clock-history"></i> {{ $claim->created_at->locale(app()->getLocale())->diffForHumans() }}
                                                 </small>
                                             </div>
                                         </div>
@@ -283,7 +283,7 @@
                                             <div>
                                                 <span class="d-block text-dark">{{ $claim->fooditems->name ?? '-' }}</span>
                                                 <small class="text-secondary badge bg-light border text-dark">
-                                                    Sisa: {{ $claim->fooditems->quantity ?? 0 }}
+                                                    {{ __('donor.badge_left', ['count' => $claim->fooditems->quantity ?? 0]) }}
                                                 </small>
                                             </div>
                                         </div>
@@ -305,12 +305,12 @@
                                         <div class="d-flex gap-2">
                                             <form action="{{ route('donor.requests.approve', $claim->id) }}" method="POST">
                                                 @csrf @method('PATCH')
-                                                <button class="btn btn-sm btn-outline-success px-3" title="Terima Permintaan">
+                                                <button class="btn btn-sm btn-outline-success px-3" title="{{ __('donor.btn_accept') }}">
                                                     <i class="bi bi-check-lg"></i>
                                                 </button>
                                             </form>
 
-                                            <button type="button" class="btn btn-sm btn-outline-danger px-3" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $claim->id }}" title="Tolak">
+                                            <button type="button" class="btn btn-sm btn-outline-danger px-3" data-bs-toggle="modal" data-bs-target="#rejectModal-{{ $claim->id }}" title="{{ __('donor.btn_reject') }}">
                                                 <i class="bi bi-x-lg"></i>
                                             </button>
                                         </div>
@@ -321,27 +321,27 @@
                                                     <form action="{{ route('donor.requests.reject', $claim->id) }}" method="POST">
                                                         @csrf @method('PATCH')
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title fw-bold">Tolak Permintaan</h5>
+                                                            <h5 class="modal-title fw-bold">{{ __('donor.modal_rej_title') }}</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Anda yakin menolak permintaan dari <strong class="text-dark">{{ $claim->receiver->name ?? 'User' }}</strong>?</p>
+                                                            <p>{!! __('donor.modal_rej_body', ['name' => $claim->receiver->name ?? 'User']) !!}</p>
                                                             
                                                             <div class="mb-3">
-                                                                <label class="form-label fw-bold small">Pilih Alasan Penolakan:</label>
+                                                                <label class="form-label fw-bold small">{{ __('donor.label_reason') }}</label>
                                                                 <select name="rejection_reason" class="form-select" required>
-                                                                    <option value="">-- Pilih Alasan --</option>
-                                                                    <option value="Maaf, sudah diambil orang lain">Sudah diambil orang lain</option>
-                                                                    <option value="Jarak lokasi terlalu jauh">Jarak lokasi terlalu jauh</option>
-                                                                    <option value="Waktu pengambilan tidak cocok">Waktu pengambilan tidak cocok</option>
-                                                                    <option value="Stok makanan habis">Stok makanan habis</option>
-                                                                    <option value="Lainnya">Lainnya</option>
+                                                                    <option value="">{{ __('donor.reason_default') }}</option>
+                                                                    <option value="{{ __('donor.reason_1') }}">{{ __('donor.reason_1') }}</option>
+                                                                    <option value="{{ __('donor.reason_2') }}">{{ __('donor.reason_2') }}</option>
+                                                                    <option value="{{ __('donor.reason_3') }}">{{ __('donor.reason_3') }}</option>
+                                                                    <option value="{{ __('donor.reason_4') }}">{{ __('donor.reason_4') }}</option>
+                                                                    <option value="{{ __('donor.reason_5') }}">{{ __('donor.reason_5') }}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <button type="submit" class="btn btn-danger">Tolak Permintaan</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('donor.btn_cancel') }}</button>
+                                                            <button type="submit" class="btn btn-danger">{{ __('donor.btn_submit_reject') }}</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -358,19 +358,19 @@
 
             <div class="tab-pane fade" id="process" role="tabpanel">
                 @if($ongoingItems->isEmpty())
-                    <p class="text-center text-muted py-4">Tidak ada donasi yang sedang diproses.</p>
+                    <p class="text-center text-muted py-4">{{ __('donor.empty_process') }}</p>
                 @else
                     <div class="alert alert-info py-2 small">
-                        <i class="bi bi-info-circle"></i> Item di sini sedang menunggu diambil oleh penerima. Anda tidak bisa mengedit data, tapi bisa membatalkan jika darurat.
+                        <i class="bi bi-info-circle"></i> {{ __('donor.alert_process') }}
                     </div>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Penerima</th>
-                                    <th>Nama Makanan</th>
-                                    <th class="text-center">Jumlah</th>
-                                    <th>Aksi</th>
+                                    <th>{{ __('donor.th_receiver') }}</th>
+                                    <th>{{ __('donor.th_food') }}</th>
+                                    <th class="text-center">{{ __('donor.th_qty_simple') }}</th>
+                                    <th>{{ __('donor.th_action') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -408,13 +408,13 @@
                                             <button type="button" class="btn btn-sm btn-outline-success" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#verifyModal-{{ $claim->id }}">
-                                                <i class="bi bi-qr-code-scan"></i> Konfirmasi
+                                                <i class="bi bi-qr-code-scan"></i> {{ __('donor.btn_confirm') }}
                                             </button>
 
                                             <button type="button" class="btn btn-sm btn-outline-danger" 
                                                     data-bs-toggle="modal" 
                                                     data-bs-target="#cancelClaimModal-{{ $claim->id }}">
-                                                <i class="bi bi-x-circle"></i> Batalkan
+                                                <i class="bi bi-x-circle"></i> {{ __('donor.btn_cancel_process') }}
                                             </button>
                                         </div>
 
@@ -422,12 +422,12 @@
                                             <div class="modal-dialog modal-sm modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header border-0 pb-0">
-                                                        <h6 class="modal-title fw-bold">Konfirmasi Donasi Selesai</h6>
+                                                        <h6 class="modal-title fw-bold">{{ __('donor.modal_ver_title') }}</h6>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body text-center">
                                                         <p class="small text-muted mb-3">
-                                                            Masukkan kode 4 digit yang ditunjukkan oleh <strong>{{ $claim->receiver->name }}</strong>:
+                                                            {!! __('donor.modal_ver_body', ['name' => $claim->receiver->name]) !!}
                                                         </p>
                                                         
                                                         <form action="{{ route('donor.claims.verify', $claim->id) }}" method="POST">
@@ -444,7 +444,7 @@
                                                             </div>
 
                                                             <button type="submit" class="btn btn-success w-100">
-                                                                Konfirmasi
+                                                                {{ __('donor.btn_verify') }}
                                                             </button>
                                                         </form>
                                                     </div>
@@ -455,17 +455,17 @@
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Batalkan Proses</h5>
+                                                        <h5 class="modal-title fw-bold">{{ __('donor.modal_cancel_title') }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p>Apakah Anda yakin ingin membatalkan proses donasi untuk <strong>{{ $claim->receiver->name }}</strong>?</p>
+                                                        <p>{!! __('donor.modal_cancel_body', ['name' => $claim->receiver->name]) !!}</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kembali</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('donor.btn_cancel') }}</button>
                                                         <form action="{{ route('donor.claims.cancel', $claim->id) }}" method="POST">
                                                             @csrf @method('PATCH')
-                                                            <button type="submit" class="btn btn-danger">Ya, Batalkan</button>
+                                                            <button type="submit" class="btn btn-danger">{{ __('donor.btn_yes_cancel') }}</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -487,12 +487,12 @@
                         <ul class="nav nav-pills" id="historySubTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active small" id="history-claims-tab" data-bs-toggle="pill" data-bs-target="#history-claims" type="button" role="tab">
-                                    <i class="bi bi-receipt-cutoff"></i> Riwayat Klaim
+                                    <i class="bi bi-receipt-cutoff"></i> {{ __('donor.subtab_claim') }}
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link small" id="history-items-tab" data-bs-toggle="pill" data-bs-target="#history-items" type="button" role="tab">
-                                    <i class="bi bi-box-seam"></i> Riwayat Donasi
+                                    <i class="bi bi-box-seam"></i> {{ __('donor.subtab_item') }}
                                 </button>
                             </li>
                         </ul>
@@ -503,17 +503,17 @@
                     
                     <div class="tab-pane fade show active" id="history-claims" role="tabpanel">
                         @if($historyClaims->isEmpty())
-                            <p class="text-center text-muted py-4">Belum ada riwayat transaksi penerima.</p>
+                            <p class="text-center text-muted py-4">{{ __('donor.empty_hist_claim') }}</p>
                         @else
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Tanggal Selesai</th>
-                                            <th>Penerima</th>
-                                            <th>Nama Makanan</th>
-                                            <th class="text-center">Jumlah</th>
-                                            <th>Status</th>
+                                            <th>{{ __('donor.th_date_done') }}</th>
+                                            <th>{{ __('donor.th_receiver') }}</th>
+                                            <th>{{ __('donor.th_food') }}</th>
+                                            <th class="text-center">{{ __('donor.th_qty_simple') }}</th>
+                                            <th>{{ __('donor.th_status') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -541,15 +541,12 @@
                                             <td>
                                                 @if($claim->status == 'completed')
                                                     <span class="badge bg-success">
-                                                        Selesai
+                                                        {{ __('donor.status_completed') }}
                                                     </span>
-                                                    {{-- @if($claim->verification_code)
-                                                        <div class="small text-muted mt-1" style="font-size: 0.7rem;">Code: {{ $claim->verification_code }}</div>
-                                                    @endif --}}
                                                 @elseif($claim->status == 'rejected')
-                                                    <span class="badge bg-danger">Ditolak</span>
+                                                    <span class="badge bg-danger">{{ __('donor.status_rejected') }}</span>
                                                 @elseif($claim->status == 'cancelled')
-                                                    <span class="badge bg-secondary">Batal</span>
+                                                    <span class="badge bg-secondary">{{ __('donor.status_cancelled') }}</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -562,14 +559,14 @@
 
                     <div class="tab-pane fade" id="history-items" role="tabpanel">
                         @if($historyItems->isEmpty())
-                            <p class="text-center text-muted py-4">Belum ada riwayat stok makanan.</p>
+                            <p class="text-center text-muted py-4">{{ __('donor.empty_hist_item') }}</p>
                         @else
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
-                                            <th>Nama Makanan</th>
-                                            <th>Status Akhir</th>
+                                            <th>{{ __('donor.th_food') }}</th>
+                                            <th>{{ __('donor.th_final_status') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -585,11 +582,11 @@
                                             </td>
                                             <td>
                                                 @if($item->status == 'completed')
-                                                    <span class="badge bg-success">Didonasikan</span>
+                                                    <span class="badge bg-success">{{ __('donor.status_donated') }}</span>
                                                 @elseif($item->status == 'cancelled')
-                                                    <span class="badge bg-danger">Dibatalkan</span>
+                                                    <span class="badge bg-danger">{{ __('donor.status_cancelled') }}</span>
                                                 @elseif($item->status == 'expired')
-                                                    <span class="badge bg-secondary">Kedaluwarsa</span>
+                                                    <span class="badge bg-secondary">{{ __('donor.status_expired') }}</span>
                                                 @else
                                                     <span class="badge bg-light text-dark border">{{ ucfirst($item->status) }}</span>
                                                 @endif

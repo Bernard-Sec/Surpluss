@@ -14,74 +14,63 @@
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
                 
-                
-                {{-- =============================
-                    GUEST USER
-                    ============================== --}}
-                    @guest
-
-                    <li class="nav-item">
+                @guest
+                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('home') ? 'fw-bold text-white' : '' }}"
                        href="{{ route('home') }}">
-                       Beranda
+                       {{ __('nav.home') }}
                     </a>
                 </li>
                 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
                        href="{{ route('how') }}">
-                       Cara Kerja
+                       {{ __('nav.how') }}
                     </a>
                 </li>
                 
                 <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
-                           href="{{ route('about') }}">
-                           Tentang Kami
-                        </a>
-                    </li>
-    
+                    <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
+                       href="{{ route('about') }}">
+                       {{ __('nav.about') }}
+                    </a>
+                </li>
 
-
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-light text-success fw-bold px-3"
+                <li class="nav-item ms-3">
+                    <a class="btn btn-light text-success fw-bold px-3"
                         href="{{ route('login') }}">
-                        Masuk
+                        {{ __('nav.login') }}
                     </a>
                 </li>
                 @endguest
                 
-                
-                {{-- =============================
-                    AUTHENTICATED USER
-                    ============================== --}}
-                    @auth
-                    
+                @auth
                     {{-- Role-based Dashboard --}}
                     @if(auth()->user()->role === 'donor')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('donor.dashboard') }}">
-                            Dasbor
+                            {{ __('nav.dashboard') }}
                         </a>
                     </li>
                     @elseif(auth()->user()->role === 'receiver')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('receiver.dashboard') }}">
-                            Dasbor
+                            {{ __('nav.dashboard') }}
                         </a>
                     </li>
                     @endif
+
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('how') ? 'fw-bold text-white' : '' }}"
                            href="{{ route('how') }}">
-                           Cara Kerja
+                           {{ __('nav.how') }}
                         </a>
                     </li>
                     
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('about') ? 'fw-bold text-white' : '' }}"
                            href="{{ route('about') }}">
-                           Tentang Kami
+                           {{ __('nav.about') }}
                         </a>
                     </li>
 
@@ -89,13 +78,13 @@
                     @if(auth()->user()->role === 'donor')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('donor.requests.index') }}">
-                                Permintaan Masuk
+                                {{ __('nav.requests') }}
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('donor.profile') }}">
-                                Profil
+                                {{ __('nav.profile') }}
                             </a>
                         </li>
                     @endif
@@ -104,7 +93,7 @@
                     <li class="nav-item ms-3">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button class="btn btn-danger px-3">Logout</button>
+                            <button class="btn btn-danger px-3">{{ __('nav.logout') }}</button>
                         </form>
                     </li>
 

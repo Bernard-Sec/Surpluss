@@ -5,7 +5,7 @@
         {{-- Logo or Back --}}
         <div class="mb-4 d-flex justify-content-between">
             <a href="{{ url()->previous() }}" class="btn btn-outline-secondary btn-sm">
-                ← Back
+                ← {{ __('login.back') }}
             </a>
 
             <h4 class="fw-bold text-success m-0">{{ $title }}</h4>

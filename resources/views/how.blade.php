@@ -60,22 +60,22 @@
         
         <div class="text-center mb-5">
             <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-bold mb-3">
-                Proses Simpel
+                {{ __('how.badge') }}
             </span>
-            <h2 class="display-5 fw-bold mb-2">Cara Kerja <span class="text-gradient">Surplus</span></h2>
+            <h2 class="display-5 fw-bold mb-2">{{ __('how.title') }} <span class="text-gradient">Surplus</span></h2>
             <p class="text-muted fs-5 mb-4" style="max-width: 600px; margin: 0 auto;">
-                Tiga langkah mudah untuk menyelamatkan makanan dan dompetmu sekaligus.
+                {{ __('how.subtitle') }}
             </p>
             
             <div class="d-inline-flex gap-4 p-3 bg-white rounded-pill shadow-sm border">
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-shield-check text-success fs-5"></i>
-                    <span class="fw-bold text-dark small">Zero Waste</span>
+                    <span class="fw-bold text-dark small">{{ __('how.tag_waste') }}</span>
                 </div>
                 <div class="vr opacity-25"></div>
                 <div class="d-flex align-items-center gap-2">
                     <i class="bi bi-lightning-charge-fill text-warning fs-5"></i>
-                    <span class="fw-bold text-dark small">Zero Hungry</span>
+                    <span class="fw-bold text-dark small">{{ __('how.tag_hungry') }}</span>
                 </div>
             </div>
         </div>
@@ -94,12 +94,12 @@
                             </svg>
                         </div>
 
-                        <h4 class="fw-bold mb-3">Donor Upload</h4>
+                        <h4 class="fw-bold mb-3">{{ __('how.step_1_title') }}</h4>
                         <p class="text-muted mb-3">
-                            Mitra seperti toko, restoran, atau katering mengunggah makanan berlebih yang masih layak konsumsi ke platform Surplus.
+                            {{ __('how.step_1_desc') }}
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> Pastikan makanan masih segar dan belum kedaluwarsa.
+                            {!! __('how.step_1_tip') !!}
                         </div>
                     </div>
                 </div>
@@ -119,12 +119,12 @@
                             </svg>
                         </div>
 
-                        <h4 class="fw-bold mb-3">Receiver Menerima</h4>
+                        <h4 class="fw-bold mb-3">{{ __('how.step_2_title') }}</h4>
                         <p class="text-muted mb-3">
-                            Pengguna melihat daftar makanan tersedia di sekitar mereka, lalu memilih dan melakukan pemesanan sesuai kebutuhan.
+                            {{ __('how.step_2_desc') }}
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> Perhatikan lokasi dan batas waktu pengambilan.
+                            {!! __('how.step_2_tip') !!}
                         </div>
                     </div>
                 </div>
@@ -144,12 +144,12 @@
                             </svg>
                         </div>
 
-                        <h4 class="fw-bold mb-3">Ambil Makanan</h4>
+                        <h4 class="fw-bold mb-3">{{ __('how.step_3_title') }}</h4>
                         <p class="text-muted mb-3">
-                            Datang ke lokasi mitra sesuai waktu yang telah disepakati untuk mengambil makanan yang telah dipesan.
+                            {{ __('how.step_3_desc') }}
                         </p>
                         <div class="pro-tip">
-                            <strong>💡 Tips:</strong> Tunjukkan bukti pemesanan kepada mitra.
+                            {!! __('how.step_3_tip') !!}
                         </div>
                     </div>
                 </div>
@@ -159,8 +159,8 @@
 
         <div class="row justify-content-center mb-5">
             <div class="col-12 text-center mb-4">
-                <h3 class="fw-bold">Manfaat Bergabung di Ekosistem Ini</h3>
-                <p class="text-muted">Satu aplikasi, sejuta dampak positif.</p>
+                <h3 class="fw-bold">{{ __('how.benefit_title') }}</h3>
+                <p class="text-muted">{{ __('how.benefit_subtitle') }}</p>
             </div>
 
             <div class="col-md-4 mb-3">
@@ -169,8 +169,8 @@
                     <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-inline-flex p-3 mb-3">
                         <i class="bi bi-wallet2 fs-3"></i>
                     </div>
-                    <h5 class="fw-bold">Tanpa Biaya</h5>
-                    <p class="text-secondary mb-0">Surplus dapat digunakan sepenuhnya gratis oleh mitra dan penerima tanpa biaya layanan, komisi, atau potongan apa pun.</p>
+                    <h5 class="fw-bold">{{ __('how.card_free_title') }}</h5>
+                    <p class="text-secondary mb-0">{{ __('how.card_free_desc') }}</p>
                 </div>
             </div>
 
@@ -180,8 +180,8 @@
                     <div class="bg-success bg-opacity-10 text-success rounded-3 d-inline-flex p-3 mb-3">
                         <i class="bi bi-tree-fill fs-3"></i>
                     </div>
-                    <h5 class="fw-bold">Selamatkan Bumi</h5>
-                    <p class="text-secondary mb-0">Setiap kg makanan yang kamu selamatkan mencegah 2.5kg emisi CO2 yang merusak lapisan ozon.</p>
+                    <h5 class="fw-bold">{{ __('how.card_earth_title') }}</h5>
+                    <p class="text-secondary mb-0">{{ __('how.card_earth_desc') }}</p>
                 </div>
             </div>
 
@@ -191,8 +191,8 @@
                     <div class="bg-warning bg-opacity-10 text-warning rounded-3 d-inline-flex p-3 mb-3">
                         <i class="bi bi-shop fs-3"></i>
                     </div>
-                    <h5 class="fw-bold">Proses Transparan</h5>
-                    <p class="text-secondary mb-0">Setiap tahap distribusi dapat dipantau secara jelas oleh mitra dan penerima.</p>
+                    <h5 class="fw-bold">{{ __('how.card_trans_title') }}</h5>
+                    <p class="text-secondary mb-0">{{ __('how.card_trans_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -200,12 +200,12 @@
         <div class="row mt-5 pt-3 text-center">
             <div class="col-12">
                 <div class="bg-success bg-opacity-10 p-5 rounded-5 d-inline-block w-100 border border-success border-opacity-10" style="max-width: 900px;">
-                    <h2 class="fw-bold text-success mb-3 display-6">Siap Menjadi Pahlawan Pangan?</h2>
+                    <h2 class="fw-bold text-success mb-3 display-6">{{ __('how.cta_title') }}</h2>
                     <p class="fs-5 text-dark opacity-75 mb-4">
-                        Bergabunglah dengan ribuan pengguna lain yang telah membuat perubahan nyata.
+                        {{ __('how.cta_desc') }}
                     </p>
                     <a href="/register" class="btn btn-success btn-lg px-5 rounded-pill fw-bold shadow hover-scale">
-                        Daftar Sekarang <i class="bi bi-arrow-right ms-2"></i>
+                        {{ __('how.cta_btn') }} <i class="bi bi-arrow-right ms-2"></i>
                     </a>
                 </div>
             </div>
