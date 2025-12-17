@@ -6,7 +6,7 @@ return [
     'badge_revolution' => 'REVOLUSI PANGAN INDONESIA',
     'hero_title_1' => 'Selamatkan Makanan,',
     'hero_title_2' => 'Selamatkan Bumi.',
-    'hero_desc' => 'Bergabunglah dengan gerakan <strong>#ZeroFoodWaste</strong>. Beli makanan berlebih dari restoran favoritmu dengan harga hemat, atau donasikan surplusmu kepada yang membutuhkan.',
+    'hero_desc' => 'Bergabunglah dengan gerakan <strong>#ZeroFoodWaste</strong>. Donasi makanan berlebihmu, atau terima bantuan dari orang-orang baik di sekitarmu.',
     'btn_join' => 'Gabung Sekarang',
     'btn_how' => 'Cara Kerja',
     'hero_stat_text' => 'Pahlawan Pangan Bergabung Hari Ini',

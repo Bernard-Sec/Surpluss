@@ -16,42 +16,62 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'name' => 'Donor1',
-            'email' => 'donor@example.com',
+            'name' => 'Restoran Sederhana Gambir',
+            'email' => 'sederhana.gambir@gmail.com',
             'password' => Hash::make('12345678'),
             'role' => 'donor',
-            'phone' => '08123456789',
-            'address' => 'Jakarta',
+            'phone' => '0213456789',
+            'address' => 'RW 02, Gambir, Central Jakarta, Special Capital Region of Jakarta',
             'email_verified_at' => now(),
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Donor2',
-            'email' => 'donor2@example.com',
-            'password' => Hash::make('1111111'),
+            'name' => 'Bakery Petojo Sejahtera',
+            'email' => 'bakery.petojo@gmail.com',
+            'password' => Hash::make('12345678'),
             'role' => 'donor',
-            'phone' => '578234234',
-            'address' => 'Jambi',
+            'phone' => '0213812345',
+            'address' => 'Jalan Petojo Sabangan X, RW 04, Petojo Selatan, Gambir, Central Jakarta',
             'email_verified_at' => now(),
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Receiver1',
-            'email' => 'receiver@example.com',
+            'name' => 'Hotel Cibodas Karawaci',
+            'email' => 'hotel.cibodas@gmail.com',
+            'password' => Hash::make('12345678'),
+            'role' => 'donor',
+            'phone' => '0215578123',
+            'address' => 'Jalan Cibodas Raya, Karawaci Baru, Karawaci, Tangerang, Banten',
+            'email_verified_at' => now(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Panti Asuhan Harapan Bangsa',
+            'email' => 'harapan.bangsa@gmail.com',
             'password' => Hash::make('87654321'),
             'role' => 'receiver',
-            'phone' => '08987654321',
-            'address' => 'Bandung',
+            'phone' => '0214219988',
+            'address' => 'Jalan Serdang Baru, RW 04, Serdang, Kemayoran, Central Jakarta',
             'email_verified_at' => now(),
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Receiver2',
-            'email' => 'receiver2@example.com',
-            'password' => Hash::make('22222222'),
+            'name' => 'Yayasan Kasih Ibu Bekasi',
+            'email' => 'kasih.ibu@gmail.com',
+            'password' => Hash::make('87654321'),
             'role' => 'receiver',
-            'phone' => '78923545123',
-            'address' => 'Bogor',
+            'phone' => '0218890123',
+            'address' => 'Graha Indah 2, Villa Taman Kartini, Bekasi, West Java',
+            'email_verified_at' => now(),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Rumah Singgah Peduli Anak',
+            'email' => 'peduli.anak@gmail.com',
+            'password' => Hash::make('87654321'),
+            'role' => 'receiver',
+            'phone' => '0227209988',
+            'address' => 'Jalan Diponegoro, Coblong, Bandung, West Java',
             'email_verified_at' => now(),
         ]);
         
