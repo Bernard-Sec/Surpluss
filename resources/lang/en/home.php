@@ -6,7 +6,7 @@ return [
     'badge_revolution' => 'INDONESIA FOOD REVOLUTION',
     'hero_title_1' => 'Save Food,',
     'hero_title_2' => 'Save Earth.',
-    'hero_desc' => 'Join the <strong>#ZeroFoodWaste</strong> movement. Buy excess food from your favorite restaurants at a bargain price, or donate your surplus to those in need.',
+    'hero_desc' => 'Join the <strong>#ZeroFoodWaste</strong> movement. Donate your excess food, or accept help from the kind people around you.',
     'btn_join' => 'Join Now',
     'btn_how' => 'How It Works',
     'hero_stat_text' => 'Food Heroes Joined Today',
